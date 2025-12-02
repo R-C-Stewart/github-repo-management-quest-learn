@@ -1,770 +1,1212 @@
-# Task 3.3: Create Issue Templates and Labels
+# Task 3.3: Creating Issue and Response Templates with GitHub Copilot
 
-**Duration:** 15 minutes
+**Duration:** 20 minutes
 **Difficulty:** Intermediate
+**GitHub Copilot Features:** @workspace, template generation, YAML formatting
 
 ## Objective
 
-Establish systems (templates, labels, and processes) that prevent future backlog chaos and improve issue quality.
+Use GitHub Copilot to create professional GitHub issue templates, response templates, and automation configurations that improve issue quality and reduce maintenance burden—preventing the chaos you just cleaned up.
 
 ## Context
 
-The current backlog is chaotic partly because there were no systems in place. Issues lack important information, aren't labeled, and follow no consistent format.
+Your backlog analysis revealed issues that were:
+- Missing critical information (8 issues needed "more info")
+- Inconsistently formatted
+- Hard to categorize
+- Time-consuming to triage
 
-By creating templates and processes now, you prevent the next backlog crisis.
+GitHub issue templates solve these problems by:
+- Requiring specific information upfront
+- Providing consistent structure
+- Enabling automatic labeling
+- Making triage faster
 
-## Your Challenge
+GitHub Copilot can generate:
+- GitHub issue form templates (YAML)
+- Classic markdown templates
+- Saved replies for common responses
+- Issue configuration files
 
-Create reusable templates, implement your label system, and document the triage process.
+This task shows you how to prevent future backlog chaos with good templates.
+
+## Setup
+
+1. **Review your previous analysis:**
+   - `issue-analysis.md` (what info was missing)
+   - `issue-relationships.md` (common patterns)
+
+2. **Open Copilot Chat:** `Ctrl+Shift+I` (Cmd+Shift+I on Mac)
+
+3. **Create templates directory:**
+   ```bash
+   mkdir -p .github/ISSUE_TEMPLATE
+   ```
 
 ## Tasks
 
-### 1. Create Bug Report Template
+### 1. Generate Bug Report Template
 
-**Example AI Prompt:**
+**GitHub Copilot Chat Prompt:**
+
 ```
-Create a GitHub issue template for bug reports in a documentation repository.
+@workspace Based on the issues I analyzed (which had missing information), create a GitHub issue form template for bug reports.
 
-Include sections for:
-1. Bug description
-2. Which documentation page/section
-3. What's incorrect or broken
-4. Expected vs actual
-5. Browser/environment (if relevant)
-6. Screenshots (optional)
-7. Additional context
+The template should:
+1. Use GitHub's YAML form syntax (not markdown)
+2. Require essential information we found was often missing:
+   - Description of the problem
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - Environment (OS, version, Python version)
+   - Error messages/logs
+3. Include helpful hints and examples
+4. Auto-label as "bug" and "needs-triage"
+5. Make required fields actually required
+6. Use appropriate input types (textarea, dropdown, checkboxes)
 
-Format as GitHub issue template YAML for .github/ISSUE_TEMPLATE/
-```
+File path: .github/ISSUE_TEMPLATE/bug_report.yml
 
-**Deliverable:** Create `bug-report-template.yml`
-
-### 2. Create Feature Request Template
-
-**Example AI Prompt:**
-```
-Create a GitHub issue template for documentation feature requests.
-
-Include sections for:
-1. What documentation is missing or needed
-2. Who needs this (audience)
-3. Why it's important (use case)
-4. Example of what you want to see
-5. Any existing workarounds
-6. Additional context
-
-Format as GitHub issue template YAML
+Make it friendly and helpful, not intimidating.
 ```
 
-**Deliverable:** Create `feature-request-template.yml`
+**What Copilot Does:**
+- Generates proper YAML structure
+- Uses GitHub's form syntax
+- Creates required vs optional fields
+- Includes helpful placeholders
+- Adds auto-labeling
 
-### 3. Create Question Template
+**Follow-up to Refine:**
 
-**Example AI Prompt:**
 ```
-Create a GitHub issue template for user questions about documentation.
+@workspace Add a dropdown for priority (P0-P3) so reporters can indicate urgency
+```
+
+```
+@workspace Add a checkbox asking if they searched existing issues first
+```
+
+**Deliverable:** Save as `.github/ISSUE_TEMPLATE/bug_report.yml`
+
+---
+
+### 2. Generate Feature Request Template
+
+**GitHub Copilot Chat Prompt:**
+
+```
+@workspace Create a GitHub issue form template for feature requests.
+
+Include fields for:
+1. **Problem to solve:** What problem does this feature address?
+2. **Proposed solution:** How should it work?
+3. **Alternatives considered:** What other approaches did they think about?
+4. **Use case:** Real-world scenario where this would help
+5. **Impact:** Who benefits? How many users?
+6. **Willingness to contribute:** Would they help implement it?
+
+Requirements:
+- YAML form syntax
+- Auto-label as "feature" and "needs-triage"
+- Make problem description and proposed solution required
+- Use dropdowns for impact (low/medium/high)
+- Include helpful examples in placeholders
+
+File: .github/ISSUE_TEMPLATE/feature_request.yml
+```
+
+**What Copilot Does:**
+- Creates structured feature request form
+- Requires key information
+- Helps assess value/impact
+- Identifies potential contributors
+
+**Deliverable:** Save as `.github/ISSUE_TEMPLATE/feature_request.yml`
+
+---
+
+### 3. Generate Documentation Issue Template
+
+**GitHub Copilot Chat Prompt:**
+
+```
+@workspace Create a GitHub issue form template specifically for documentation issues.
+
+Based on our analysis, doc issues include:
+- Typos and errors
+- Unclear instructions
+- Missing information
+- Broken links
+- Outdated content
+
+Fields needed:
+1. **Issue type:** Dropdown (typo, unclear, missing, broken link, outdated, other)
+2. **Location:** Where in the docs (file path or URL)
+3. **Current content:** What it says now
+4. **Problem:** What's wrong with it
+5. **Suggested fix:** How to improve it (optional)
+6. **Additional context:** Screenshots, etc. (optional)
+
+Auto-label as "docs" and "needs-triage"
+
+File: .github/ISSUE_TEMPLATE/documentation.yml
+```
+
+**What Copilot Does:**
+- Creates docs-specific template
+- Categorizes doc issue types
+- Requires location information
+- Makes fixes easier with current/suggested content
+
+**Deliverable:** Save as `.github/ISSUE_TEMPLATE/documentation.yml`
+
+---
+
+### 4. Generate Question Template
+
+**GitHub Copilot Chat Prompt:**
+
+```
+@workspace Create a GitHub issue form template for questions and support requests.
+
+Many issues in our backlog were actually questions (e.g., "how do I...").
+
+Fields:
+1. **What are you trying to do?** (required)
+2. **What have you tried?** (required)
+3. **Where did you look for answers?** (docs, GitHub, etc.)
+4. **Environment:** OS, version (optional)
+5. **Additional context:** (optional)
 
 Include:
-1. What are you trying to do?
-2. What documentation did you check?
-3. What specifically is unclear?
-4. What would make this clearer?
+- Friendly tone (questions are welcome!)
+- Links to documentation
+- Suggestion to check FAQ first
+- Auto-label as "question" and "support"
 
-Add note suggesting community forum for general questions.
+Also include a note: "For general discussion, consider GitHub Discussions instead of issues"
 
-Format as GitHub issue template YAML
+File: .github/ISSUE_TEMPLATE/question.yml
 ```
 
-**Deliverable:** Create `question-template.yml`
+**What Copilot Does:**
+- Creates welcoming question template
+- Encourages self-service first
+- Gathers useful context
+- Directs to appropriate channels
 
-### 4. Create Triage Process Documentation
+**Deliverable:** Save as `.github/ISSUE_TEMPLATE/question.yml`
 
-**Example AI Prompt:**
+---
+
+### 5. Create Template Configuration File
+
+**GitHub Copilot Chat Prompt:**
+
 ```
-Create documentation for triaging new issues in our documentation repository.
+@workspace Create the GitHub issue template config file that:
 
-Include:
-1. Who does triage (maintainers? Rotating duty?)
-2. When (daily? Weekly? On notification?)
-3. Steps to triage each new issue:
-   - Read and understand
-   - Apply type label
-   - Apply priority label
-   - Apply component label
-   - Add to project/milestone if appropriate
-   - Respond with acknowledgment
-   - Assign if possible
-4. Response time SLA (e.g., first response within 48 hours)
-5. Escalation (what qualifies as urgent)
-6. Examples of good triage
+1. Customizes the "New Issue" page
+2. Adds a blank issue option for edge cases
+3. Links to external resources:
+   - Documentation: https://docs.example.com
+   - Discussions: Link to GitHub Discussions
+   - Security issues: Link to security policy
 
-Format as CONTRIBUTING.md section
-```
+File: .github/ISSUE_TEMPLATE/config.yml
 
-**Deliverable:** Create `triage-process.md`
-
-### 5. Create Response Templates
-
-**Example AI Prompt:**
-```
-Create saved reply templates for common issue responses:
-
-1. **Closing as duplicate**
-   - Polite acknowledgment
-   - Link to original issue
-   - Invite to subscribe
-
-2. **Needs more information**
-   - Thank reporter
-   - Specific questions to clarify
-   - Timeline for response
-
-3. **Out of scope / Won't fix**
-   - Thank for suggestion
-   - Explain why out of scope
-   - Suggest alternatives
-
-4. **Fixed / Already resolved**
-   - Confirm resolution
-   - Link to fix (PR/commit)
-   - When available
-
-5. **Good first issue**
-   - Thank for report
-   - Invite to contribute
-   - Link to CONTRIBUTING.md
-
-Provide as markdown templates
+Use proper GitHub config.yml syntax.
 ```
 
-**Deliverable:** Create `response-templates.md`
+**What Copilot Does:**
+- Generates config.yml
+- Customizes issue creation experience
+- Adds helpful links
+- Enables blank issue option
 
-### 6. Implement Label System
+**Deliverable:** Save as `.github/ISSUE_TEMPLATE/config.yml`
 
-Using the label system from Task 3.1:
+---
 
-**Create `labels.yml` file with:**
-```yaml
-# Type Labels
-- name: bug
-  description: Something is broken or incorrect
-  color: d73a4a
+### 6. Generate Saved Replies for Common Responses
 
-- name: enhancement
-  description: New feature or improvement
-  color: a2eeef
+**GitHub Copilot Chat Prompt:**
 
-[Continue for all labels...]
+```
+@workspace Based on our backlog analysis, generate saved reply templates for common scenarios.
+
+Create templates for:
+
+1. **Requesting more information:**
+   - When issue is vague
+   - Polite, specific about what's needed
+   - Template format for GitHub saved replies
+
+2. **Closing as duplicate:**
+   - Thanks reporter
+   - Links to original issue
+   - Invites them to add info there
+
+3. **Closing as won't fix:**
+   - Explains why (with kindness)
+   - Suggests alternatives if applicable
+   - Leaves door open for discussion
+
+4. **Closing as needs discussion:**
+   - Invites to GitHub Discussions
+   - Explains why discussion better than issue
+   - Provides discussion link
+
+5. **Asking for reproduction:**
+   - Politely requests minimal reproduction
+   - Explains why it's helpful
+   - Offers to help create one
+
+6. **Welcoming first contribution:**
+   - Thanks for interest
+   - Links to contributor guide
+   - Offers mentorship
+
+Each template should be:
+- Friendly and professional
+- Copy-paste ready
+- Customizable (uses placeholders like {issue-number})
 ```
 
-**Deliverable:** Create `labels.yml` configuration file
+**What Copilot Does:**
+- Creates professional response templates
+- Maintains consistent tone
+- Saves time on common responses
+- Keeps interactions positive
+
+**Deliverable:** Create `saved-replies.md` with all templates
+
+---
+
+### 7. Create Issue Labeling Guide
+
+**GitHub Copilot Chat Prompt:**
+
+```
+@workspace Create a labeling guide document that explains:
+
+1. All labels we should have (from our analysis):
+   - Type labels (bug, feature, docs, question)
+   - Priority labels (P0-P3)
+   - Status labels (needs-info, duplicate, ready)
+   - Component labels (api, cli, docs, installer)
+
+2. For each label:
+   - Name
+   - Color code (hex)
+   - Description
+   - When to use it
+   - Example issues
+
+3. Labeling decision tree:
+   - "If the issue is X, label it Y"
+   - Flowchart in Mermaid format
+
+4. GitHub CLI commands to create all labels
+
+This helps maintainers label consistently.
+
+File: LABELING_GUIDE.md
+```
+
+**What Copilot Does:**
+- Documents complete label system
+- Provides clear guidelines
+- Creates decision flowchart
+- Includes setup commands
+
+**Deliverable:** Save as `LABELING_GUIDE.md`
+
+---
+
+### 8. Generate Auto-Labeling Workflow
+
+**GitHub Copilot Chat Prompt:**
+
+```
+@workspace Create a GitHub Actions workflow that automatically labels issues based on content.
+
+The workflow should:
+1. Trigger on issue creation/editing
+2. Auto-label based on keywords:
+   - "bug", "error", "crash" → add "bug" label
+   - "feature", "request", "enhancement" → add "feature" label
+   - "docs", "documentation", "typo" → add "docs" label
+   - "how to", "question" → add "question" label
+3. Auto-label based on title patterns
+4. Add "needs-triage" to all new issues
+5. Comment with welcome message on first-time issues
+
+Use proper GitHub Actions YAML syntax.
+
+File: .github/workflows/issue-labeler.yml
+```
+
+**What Copilot Does:**
+- Generates GitHub Actions workflow
+- Uses keyword detection
+- Automates basic triage
+- Welcomes new contributors
+
+**Alternative - Simple Approach:**
+
+```
+@workspace Actually, let's use GitHub's built-in issue labeler action. Create the configuration for that instead.
+
+File: .github/labeler.yml
+```
+
+**Deliverable:** Save as `.github/workflows/issue-labeler.yml` or `.github/labeler.yml`
+
+---
 
 ## Output Format
 
-### .github/ISSUE_TEMPLATE/bug-report.yml
+Your template files should be organized like this:
+
+### Bug Report Template (.github/ISSUE_TEMPLATE/bug_report.yml)
 
 ```yaml
 name: Bug Report
-description: Report a problem with the documentation
-title: "[BUG] "
-labels: ["bug"]
+description: Report a bug or unexpected behavior
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to report a documentation bug!
+        Thanks for taking the time to report a bug! Please fill out the information below to help us fix it quickly.
 
-  - type: input
-    id: location
+  - type: checkboxes
+    id: prerequisites
     attributes:
-      label: Documentation Location
-      description: Which page or section has the issue?
-      placeholder: "e.g., Installation Guide - Step 3"
-    validations:
-      required: true
+      label: Prerequisites
+      description: Please confirm before submitting
+      options:
+        - label: I have searched existing issues to make sure this isn't a duplicate
+          required: true
+        - label: I have checked the documentation
+          required: true
 
   - type: textarea
     id: description
     attributes:
-      label: What's Wrong?
-      description: Clearly describe what's incorrect or broken
-      placeholder: "The installation command doesn't work..."
+      label: Bug Description
+      description: A clear description of what the bug is
+      placeholder: "Example: When I try to install on Windows, the installer crashes with error..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions to reproduce the issue
+      placeholder: |
+        1. Install on Windows 11
+        2. Run command: techflow install
+        3. See error message
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: What Should It Say?
-      description: What's the correct information or expected behavior?
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: "Installation should complete successfully"
     validations:
-      required: false
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: "Installation crashes with error: ..."
+    validations:
+      required: true
 
   - type: dropdown
-    id: severity
+    id: os
     attributes:
-      label: Impact
-      description: How much does this affect users?
+      label: Operating System
       options:
-        - Critical (blocks users)
-        - High (causes significant confusion)
-        - Medium (inconvenient but has workaround)
-        - Low (minor issue)
-    validations:
-      required: true
-
-  - type: textarea
-    id: context
-    attributes:
-      label: Additional Context
-      description: Screenshots, error messages, or other helpful info
-    validations:
-      required: false
-```
-
-### .github/ISSUE_TEMPLATE/feature-request.yml
-
-```yaml
-name: Documentation Request
-description: Request new or improved documentation
-title: "[REQUEST] "
-labels: ["enhancement"]
-body:
-  - type: markdown
-    attributes:
-      value: |
-        Thanks for suggesting how we can improve our documentation!
-
-  - type: textarea
-    id: need
-    attributes:
-      label: What Documentation is Needed?
-      description: What would you like to see documented?
-      placeholder: "A tutorial on..."
-    validations:
-      required: true
-
-  - type: textarea
-    id: usecase
-    attributes:
-      label: Why is This Important?
-      description: What are you trying to accomplish?
-      placeholder: "I'm trying to..."
+        - Windows 10
+        - Windows 11
+        - macOS (Intel)
+        - macOS (Apple Silicon)
+        - Linux (Ubuntu)
+        - Linux (Other)
+        - Other
     validations:
       required: true
 
   - type: input
-    id: audience
+    id: version
     attributes:
-      label: Target Audience
-      description: Who needs this? (beginners, advanced users, etc.)
-      placeholder: "e.g., New users during onboarding"
+      label: Version
+      description: What version of our software are you using?
+      placeholder: "2.1.0"
+    validations:
+      required: true
 
-  - type: textarea
-    id: example
+  - type: input
+    id: python-version
     attributes:
-      label: Example or Structure
-      description: Do you have an example of what you'd like to see?
+      label: Python Version
+      description: What version of Python?
+      placeholder: "3.10.5"
     validations:
       required: false
 
   - type: textarea
-    id: workaround
+    id: logs
     attributes:
-      label: Current Workaround
-      description: How are you handling this currently?
+      label: Error Messages / Logs
+      description: Copy and paste any error messages or logs
+      render: shell
+      placeholder: |
+        ERROR: Installation failed
+        Traceback (most recent call last):
+        ...
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How urgent is this?
+      options:
+        - P0 - Critical (blocking my work)
+        - P1 - High (important but can work around)
+        - P2 - Normal (standard priority)
+        - P3 - Low (nice to have)
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Anything else that might be relevant (screenshots, environment details, etc.)
+      placeholder: "I'm using PowerShell on Windows 11 Pro..."
     validations:
       required: false
 ```
 
-### triage-process.md
+### Feature Request Template (.github/ISSUE_TEMPLATE/feature_request.yml)
+
+```yaml
+name: Feature Request
+description: Suggest a new feature or enhancement
+title: "[Feature]: "
+labels: ["feature", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Help us understand your idea by filling out the details below.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I have searched existing issues to make sure this isn't a duplicate
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to Solve
+      description: What problem does this feature address?
+      placeholder: "Currently, users can't easily... This makes it difficult to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: How should this feature work?
+      placeholder: "Add a new command 'techflow sync' that automatically..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: What other approaches have you thought about?
+      placeholder: "I considered using... but that doesn't work because..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use Case
+      description: Describe a real-world scenario where you'd use this
+      placeholder: |
+        As a developer, I need to sync my local environment with the cloud daily.
+        This feature would let me...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Impact
+      description: Who would benefit from this feature?
+      options:
+        - High - Many users would benefit
+        - Medium - Some users would benefit
+        - Low - Few users would benefit
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Would you be willing to help implement this?
+      options:
+        - label: I'd be willing to submit a PR with guidance
+        - label: I can help test the implementation
+        - label: I can help with documentation
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Mockups, examples, or any other relevant information
+    validations:
+      required: false
+```
+
+### Documentation Template (.github/ISSUE_TEMPLATE/documentation.yml)
+
+```yaml
+name: Documentation Issue
+description: Report an issue with documentation
+title: "[Docs]: "
+labels: ["docs", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve our documentation!
+
+  - type: dropdown
+    id: issue-type
+    attributes:
+      label: Issue Type
+      description: What kind of documentation issue is this?
+      options:
+        - Typo or grammar error
+        - Unclear instructions
+        - Missing information
+        - Broken link
+        - Outdated content
+        - Code example doesn't work
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: location
+    attributes:
+      label: Location
+      description: Where is this issue? (file path or URL)
+      placeholder: "docs/getting-started.md or https://docs.example.com/api"
+    validations:
+      required: true
+
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Content
+      description: What does the documentation say now?
+      placeholder: "Quote the current text or describe what's there"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's Wrong
+      description: Explain the problem
+      placeholder: "This instruction doesn't work on Windows because..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggested
+    attributes:
+      label: Suggested Fix
+      description: How should it be fixed? (optional but helpful!)
+      placeholder: "It should say... or include this example..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Screenshots, error messages, etc.
+    validations:
+      required: false
+```
+
+### Question Template (.github/ISSUE_TEMPLATE/question.yml)
+
+```yaml
+name: Question / Help
+description: Ask a question or get help using the tool
+title: "[Question]: "
+labels: ["question", "support"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        👋 Thanks for asking a question!
+
+        **Before submitting:**
+        - Check the [documentation](https://docs.example.com)
+        - Search [existing issues](../issues) for similar questions
+        - Check [GitHub Discussions](../discussions) for Q&A
+
+        **Note:** For general discussion, please use GitHub Discussions instead of issues.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your Question
+      description: What are you trying to do or understand?
+      placeholder: "How do I configure automatic backups in TechFlow?"
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What Have You Tried?
+      description: What approaches have you already attempted?
+      placeholder: |
+        I tried:
+        1. Running techflow backup --auto
+        2. Checking the config file
+        But I'm not sure how to...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: Where Have You Looked?
+      description: Help us understand where you've already searched
+      options:
+        - label: Documentation
+        - label: GitHub Issues
+        - label: GitHub Discussions
+        - label: Web search
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System (if relevant)
+      placeholder: "Windows 11"
+
+  - type: input
+    id: version
+    attributes:
+      label: Version (if relevant)
+      placeholder: "2.1.0"
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Anything else that might help
+    validations:
+      required: false
+```
+
+### Config File (.github/ISSUE_TEMPLATE/config.yml)
+
+```yaml
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Documentation
+    url: https://docs.example.com
+    about: Check our comprehensive documentation
+  - name: 💬 GitHub Discussions
+    url: https://github.com/owner/repo/discussions
+    about: For general questions and discussions, use Discussions instead of Issues
+  - name: 🔒 Security Vulnerability
+    url: https://github.com/owner/repo/security/policy
+    about: Please report security vulnerabilities through our security policy
+  - name: 💡 Feature Discussions
+    url: https://github.com/owner/repo/discussions/categories/ideas
+    about: Discuss and vote on feature ideas
+```
+
+### Saved Replies (saved-replies.md)
 
 ```markdown
-# Issue Triage Process
+# GitHub Saved Reply Templates
 
-## Purpose
+Copy these to GitHub Settings > Saved Replies for quick responses.
 
-Ensure all issues are properly categorized, prioritized, and responded to in a timely manner.
+---
 
-## Roles & Responsibilities
+## Template: Request More Information
 
-**Triage Team:** All documentation maintainers
-**Schedule:** Daily check for new issues (or configure notifications)
-**SLA:** First response within 48 hours (24h for critical issues)
+**Name:** request-more-info
 
-## Triage Steps
+**Comment:**
+```
+Thanks for reporting this, @{username}!
 
-### 1. Initial Review (2-3 minutes per issue)
+To help us investigate, could you please provide:
 
-**Read the issue carefully:**
-- What is being reported/requested?
-- Is the description clear and complete?
-- Is this actually a documentation issue?
+- [ ] Steps to reproduce the issue
+- [ ] What you expected to happen
+- [ ] What actually happened
+- [ ] Your environment (OS, version, Python version)
+- [ ] Any error messages or logs
 
-### 2. Validate & Clarify
+The more detail you can provide, the faster we can fix this! 🙏
+```
 
-**Ask yourself:**
-- Can I reproduce this (for bugs)?
-- Is this a duplicate of existing issue?
-- Is this in scope for our documentation?
-- Is there enough information to act?
+---
 
-**If unclear:** Request more information using response template
+## Template: Close as Duplicate
 
-### 3. Apply Labels
+**Name:** close-duplicate
 
-**Apply in this order:**
+**Comment:**
+```
+Thanks for reporting this, @{username}!
 
-1. **Type Label** (required - choose one)
-   - `bug` - Something is wrong
-   - `enhancement` - New or improved docs
-   - `question` - User question
-   - `documentation` - Meta issue about docs process
-   - `typo` - Simple text correction
+This is a duplicate of #{original-issue-number}, where the same issue is being tracked with more detail.
 
-2. **Priority Label** (required - choose one)
-   - `P0-critical` - Blocks users, urgent
-   - `P1-high` - Important, affects many users
-   - `P2-medium` - Should fix, moderate impact
-   - `P3-low` - Nice to have, low impact
+I'm closing this to keep the discussion in one place, but **please add any additional information you have to #{original-issue-number}**—especially if your symptoms or environment are different!
 
-3. **Component Label** (as appropriate)
-   - `area:installation`
-   - `area:api`
-   - `area:tutorials`
-   - `area:guides`
+We appreciate you taking the time to report this. 👍
+```
 
-4. **Status Labels** (if applicable)
-   - `needs-info` - Waiting for reporter
-   - `good-first-issue` - Good for new contributors
-   - `help-wanted` - Need community help
+---
 
-### 4. Assess Priority
+## Template: Close as Won't Fix
 
-Use this framework:
+**Name:** close-wont-fix
 
-**P0 - Critical:**
-- Incorrect commands that break installations
-- Security issues in documentation
-- Broken core workflows
-- Anything blocking users completely
+**Comment:**
+```
+Thanks for the suggestion, @{username}!
 
-**P1 - High:**
-- Major confusion or missing key documentation
-- Affects significant portion of users
-- Frequently asked questions
-- Important missing tutorials
+After discussing this with the team, we've decided not to implement this feature because {reason}.
 
-**P2 - Medium:**
-- Improvements to existing docs
-- Nice-to-have features
-- Affects some users
-- Non-urgent bugs with workarounds
+However, you might be interested in {alternative-approach-or-tool}.
 
-**P3 - Low:**
-- Minor polish items
-- Edge cases
-- Affects very few users
-- Cosmetic issues
+We appreciate your input and understand this might be disappointing. If you'd like to discuss this further, please feel free to open a discussion in [GitHub Discussions](link). We're always open to reconsidering based on new information or changing circumstances.
 
-### 5. Respond
+Thanks for your understanding! 🙏
+```
 
-**Always acknowledge the issue within SLA:**
+---
 
-**Good acknowledgment:**
-> Thanks for reporting this! I've labeled this as [priority] and [type]. We'll [plan to address/need more info/add to backlog]. Expected timeline: [estimate or "will update soon"].
+## Template: Move to Discussions
 
-**For duplicates:**
-> Thanks! This is a duplicate of #X which we're tracking. Closing this one, but please feel free to add any additional context to #X.
+**Name:** move-to-discussions
 
-**For out-of-scope:**
-> Thanks for the suggestion! This is outside the scope of our documentation, but you might find [alternative resource] helpful. Closing as won't-fix.
+**Comment:**
+```
+Thanks for opening this, @{username}!
 
-**For needs-info:**
-> Thanks for reporting! To help us address this, could you provide:
-> 1. [Specific question]
-> 2. [Specific question]
-> We'll follow up once we have this information.
+This is a great topic for discussion, but issues are better suited for tracking bugs and specific feature requests. I'm going to close this and suggest continuing the conversation in [GitHub Discussions](link).
 
-### 6. Assign (if possible)
+I've created a discussion here: {discussion-link}
 
-- **Self-assign** if you can fix quickly (<1 hour)
-- **Assign to expert** if it requires specific knowledge
-- **Leave unassigned** and add to project board for team planning
+Looking forward to hearing your thoughts there! 💬
+```
 
-### 7. Add to Planning
+---
 
-- **Critical:** Add to current sprint/milestone
-- **High:** Add to next sprint/milestone
-- **Medium/Low:** Add to backlog
+## Template: Request Reproduction
+
+**Name:** request-reproduction
+
+**Comment:**
+```
+Thanks for the report, @{username}!
+
+To help us fix this, could you provide a minimal reproduction? This means:
+
+1. The smallest possible code/steps that demonstrate the issue
+2. No extra dependencies or setup if possible
+3. Clear instructions on how to run it
+
+**Example:**
+```
+# Install
+pip install techflow==2.1.0
+
+# Run this command
+techflow sync --config minimal.yml
+
+# See this error
+ERROR: ...
+```
+
+A minimal reproduction helps us:
+- Identify the exact cause faster
+- Write a test to prevent regression
+- Verify the fix works
+
+Happy to help create one if you're not sure how! Just share what you're seeing and we can work together on it. 🤝
+```
+
+---
+
+## Template: Welcome First-Time Contributor
+
+**Name:** welcome-first-time
+
+**Comment:**
+```
+Welcome, @{username}! 👋
+
+Thank you for your interest in contributing to this project! This is wonderful to see.
+
+Before you get started:
+- Check out our [Contributing Guide](CONTRIBUTING.md)
+- Read our [Code of Conduct](CODE_OF_CONDUCT.md)
+- Join our [Discord/Slack/Community] if you have questions
+
+For this specific issue:
+- {specific-guidance-for-this-issue}
+
+Don't hesitate to ask questions—we're here to help! Looking forward to working with you. 🎉
+```
+
+---
+
+## Template: Thank Maintainer for Contribution
+
+**Name:** thank-contributor
+
+**Comment:**
+```
+Merged! Thank you for this contribution, @{username}! 🎉
+
+Your {description-of-contribution} makes the project better for everyone. We really appreciate you taking the time to:
+- {what-they-did-well}
+
+Looking forward to more contributions from you! 🚀
+```
+
+---
+
+## Template: Stale Issue Check
+
+**Name:** stale-check
+
+**Comment:**
+```
+Hi @{username}!
+
+We haven't heard back on this issue in {time-period}. We're doing some cleanup and want to make sure we're working on the most relevant issues.
+
+**Are you still experiencing this?** If so, please let us know and we'll keep this open.
+
+If we don't hear back in 7 days, we'll close this to keep the issue tracker organized. You can always reopen it later if needed!
+
+Thanks! 🙏
+```
+
+---
+```
+
+### Labeling Guide (LABELING_GUIDE.md)
+
+```markdown
+# Issue Labeling Guide
+
+This guide helps maintainers label issues consistently.
+
+---
+
+## Label Categories
+
+### Type Labels
+
+| Label | Color | Description | When to Use | Example |
+|-------|-------|-------------|-------------|---------|
+| `bug` | `#d73a4a` | Something isn't working | Issue reports unexpected behavior, errors, crashes | "Installation fails on Windows" |
+| `feature` | `#0075ca` | New feature request | Issue requests new functionality | "Add dark mode support" |
+| `enhancement` | `#a2eeef` | Improvement to existing feature | Issue requests improvement to something that already exists | "Make error messages clearer" |
+| `docs` | `#0075ca` | Documentation issue | Issue is about docs (typos, missing info, unclear) | "Typo in getting started guide" |
+| `question` | `#d876e3` | Question or support request | Issue is asking how to do something | "How do I configure backups?" |
+| `discussion` | `#cc317c` | Needs discussion | Issue needs community input before action | "Should we support Python 2.7?" |
+
+### Priority Labels
+
+| Label | Color | Description | When to Use |
+|-------|-------|-------------|-------------|
+| `P0-critical` | `#b60205` | Critical, needs immediate fix | Blocks users, security issue, data loss, docs site down |
+| `P1-high` | `#d93f0b` | Important, fix soon | Affects many users, broken core feature |
+| `P2-normal` | `#fbca04` | Standard priority | Standard bug or feature, normal schedule |
+| `P3-low` | `#c2e0c6` | Nice to have | Minor issue, edge case, cosmetic |
+
+### Status Labels
+
+| Label | Color | Description | When to Use |
+|-------|-------|-------------|-------------|
+| `needs-info` | `#d876e3` | Waiting for more information | Issue is vague or missing key details |
+| `needs-triage` | `#ededed` | Needs initial review | Automatically added to new issues |
+| `duplicate` | `#cfd3d7` | Duplicate of another issue | Same as existing issue |
+| `wont-fix` | `#ffffff` | Will not be fixed/implemented | Decided not to do this |
+| `ready` | `#0e8a16` | Ready to work on | Issue is clear, approved, ready for implementation |
+| `in-progress` | `#fbca04` | Being worked on | Someone is actively working on this |
+| `blocked` | `#b60205` | Blocked by something else | Can't proceed until another issue is resolved |
+
+### Component Labels
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `api` | `#1d76db` | API related |
+| `cli` | `#1d76db` | Command line interface |
+| `docs` | `#0075ca` | Documentation site |
+| `installer` | `#1d76db` | Installation process |
+| `windows` | `#5319e7` | Windows-specific |
+| `macos` | `#5319e7` | macOS-specific |
+| `linux` | `#5319e7` | Linux-specific |
+
+---
+
+## Labeling Decision Tree
+
+```mermaid
+graph TD
+    A[New Issue] --> B{What type?}
+    B -->|Reports broken behavior| C[bug]
+    B -->|Requests new feature| D[feature]
+    B -->|Asks how-to| E[question]
+    B -->|About docs| F[docs]
+
+    C --> G{How urgent?}
+    G -->|Blocks users| H[P0-critical]
+    G -->|Important| I[P1-high]
+    G -->|Normal| J[P2-normal]
+    G -->|Minor| K[P3-low]
+
+    C --> L{Has enough info?}
+    L -->|No| M[needs-info]
+    L -->|Yes| N[ready]
+
+    style H fill:#b60205,color:#fff
+    style I fill:#d93f0b,color:#fff
+    style J fill:#fbca04
+    style K fill:#c2e0c6
+```
+
+---
+
+## Quick Reference
+
+**Bug with good info:**
+- `bug`, `P2-normal`, `ready`, `[component]`
+
+**Urgent bug:**
+- `bug`, `P0-critical`, `ready`, `[component]`
+
+**Vague bug report:**
+- `bug`, `needs-info`, `needs-triage`
+
+**Feature request:**
+- `feature`, `P2-normal`, `needs-triage`
+
+**Documentation typo:**
+- `docs`, `P2-normal`, `ready` (quick fix!)
+
+**Question:**
+- `question`, consider moving to Discussions
+
+**Duplicate:**
+- `duplicate`, close with reference to original
+
+---
+
+## Creating Labels via GitHub CLI
+
+```bash
+# Type labels
+gh label create "bug" --description "Something isn't working" --color d73a4a
+gh label create "feature" --description "New feature request" --color 0075ca
+gh label create "enhancement" --description "Improvement to existing feature" --color a2eeef
+gh label create "docs" --description "Documentation issue" --color 0075ca
+gh label create "question" --description "Question or support request" --color d876e3
+gh label create "discussion" --description "Needs discussion" --color cc317c
+
+# Priority labels
+gh label create "P0-critical" --description "Critical, needs immediate fix" --color b60205
+gh label create "P1-high" --description "Important, fix soon" --color d93f0b
+gh label create "P2-normal" --description "Standard priority" --color fbca04
+gh label create "P3-low" --description "Nice to have" --color c2e0c6
+
+# Status labels
+gh label create "needs-info" --description "Waiting for more information" --color d876e3
+gh label create "needs-triage" --description "Needs initial review" --color ededed
+gh label create "duplicate" --description "Duplicate of another issue" --color cfd3d7
+gh label create "wont-fix" --description "Will not be fixed" --color ffffff
+gh label create "ready" --description "Ready to work on" --color 0e8a16
+gh label create "in-progress" --description "Being worked on" --color fbca04
+gh label create "blocked" --description "Blocked by something" --color b60205
+
+# Component labels
+gh label create "api" --description "API related" --color 1d76db
+gh label create "cli" --description "CLI related" --color 1d76db
+gh label create "installer" --description "Installation process" --color 1d76db
+gh label create "windows" --description "Windows-specific" --color 5319e7
+gh label create "macos" --description "macOS-specific" --color 5319e7
+gh label create "linux" --description "Linux-specific" --color 5319e7
+```
+
+---
 
 ## Examples
 
-### Example 1: Good Bug Report
+### Example 1: Installation Bug
 
-**Issue:** "Installation command fails on Windows"
-**Triage Action:**
-- ✅ Apply labels: `bug`, `P1-high`, `area:installation`
-- ✅ Confirm bug affects Windows users
-- ✅ Respond: "Confirmed - testing fix now. Should have update within 24h."
-- ✅ Self-assign and add to current sprint
-- ✅ Fix within 24h
+**Issue:** "Can't install on Windows 11, gets error about paths"
 
-### Example 2: Vague Feature Request
+**Labels:**
+- `bug` (it's broken)
+- `P1-high` (blocks Windows users)
+- `installer` (component)
+- `windows` (platform)
+- `ready` (has enough info)
 
-**Issue:** "Need better docs"
-**Triage Action:**
-- ✅ Apply label: `needs-info`
-- ✅ Respond: "Thanks! Can you help us understand what documentation would be most helpful? What are you trying to accomplish?"
-- ✅ Set reminder to close if no response in 30 days
-
-### Example 3: Duplicate
-
-**Issue:** "Broken link in getting started"
-**Triage Action:**
-- ✅ Search for existing issues about same link
-- ✅ Find issue #45 already tracks this
-- ✅ Apply label: `duplicate`
-- ✅ Respond: "Thanks! This is tracked in #45. Closing as duplicate."
-- ✅ Close immediately
-
-## Common Triage Mistakes
-
-❌ **Don't:**
-- Skip labeling (all issues need at least type + priority)
-- Ignore issues (respond even if you can't fix immediately)
-- Over-promise timelines (under-promise, over-deliver)
-- Be rude or dismissive (even to low-quality issues)
-
-✅ **Do:**
-- Label consistently
-- Respond professionally
-- Set realistic expectations
-- Thank reporters (they're helping!)
-
-## Triage Metrics
-
-Track these to measure process health:
-- **Time to first response:** Avg time from issue opened to first comment
-- **Triage coverage:** % of issues labeled within 48h
-- **Backlog growth:** New issues vs closed issues per week
-- **Stale issues:** Issues open >90 days with no activity
-
-**Target SLAs:**
-- First response: <48h (95% of issues)
-- Labeling: <24h (100% of issues)
-- Critical issues: <4h first response
-
-## Monthly Triage Review
-
-Once per month, review:
-1. Open issues without labels → Triage
-2. `needs-info` issues >30 days old → Close with note
-3. Stale issues (>90 days, no activity) → Close or re-prioritize
-4. Label usage patterns → Adjust labels if needed
-5. Response time metrics → Improve process if needed
+**Rationale:** Serious bug affecting specific platform, clear reproduction steps.
 
 ---
 
-**Remember:** Good triage helps the team work efficiently and makes contributors feel valued!
-```
+### Example 2: Vague Bug Report
 
-### response-templates.md
+**Issue:** "It doesn't work"
 
-```markdown
-# Issue Response Templates
+**Labels:**
+- `bug` (seems to be a bug)
+- `needs-info` (too vague)
+- `needs-triage` (needs review)
 
-Saved replies for common scenarios. Use as-is or customize.
+**Action:** Request more information using saved reply template.
 
-## Closing as Duplicate
+---
 
-```markdown
-Thanks for reporting this! This is a duplicate of #[ISSUE_NUMBER] which we're actively tracking.
+### Example 3: Feature Request
 
-I'm closing this issue to consolidate discussion, but please feel free to:
-- Subscribe to #[ISSUE_NUMBER] for updates
-- Add any additional context there if you have unique details
+**Issue:** "Add support for PostgreSQL database"
 
-Thanks for helping us improve the documentation!
-```
+**Labels:**
+- `feature` (new functionality)
+- `P2-normal` (standard priority)
+- `needs-triage` (needs discussion on feasibility)
 
-## Needs More Information
+**Rationale:** New feature, needs team review before committing.
 
-```markdown
-Thanks for taking the time to report this!
+---
 
-To help us address this issue, could you provide some additional details:
+## Best Practices
 
-1. [SPECIFIC_QUESTION_1]
-2. [SPECIFIC_QUESTION_2]
-3. [SPECIFIC_QUESTION_3]
+1. **Add labels immediately** - Don't let issues sit unlabeled
+2. **Use multiple labels** - Combine type + priority + component
+3. **Update labels as status changes** - Remove `needs-info` when info is provided
+4. **Be consistent** - Follow this guide, don't make up new labels
+5. **Use component labels** - Helps filter and assign issues
+6. **Prioritize honestly** - Not everything is P0!
 
-We'll follow up once we have this information. If we don't hear back within 30 days, we'll close this issue, but you're welcome to reopen it anytime with the requested details.
-```
+---
 
-## Out of Scope / Won't Fix
-
-```markdown
-Thanks for the suggestion!
-
-After team discussion, we've decided this is outside the scope of our documentation because [REASON]:
-- [SPECIFIC_REASON_1]
-- [SPECIFIC_REASON_2]
-
-However, you might find these alternatives helpful:
-- [ALTERNATIVE_1]
-- [ALTERNATIVE_2]
-
-We're closing this as won't-fix, but we appreciate you taking the time to suggest improvements!
-```
-
-## Already Fixed
-
-```markdown
-Great catch! This issue was resolved in [PR_NUMBER / COMMIT_HASH].
-
-The fix is:
-- ✅ Merged to main
-- ✅ Deployed to [DOCS_SITE]
-- ✅ Available as of [DATE]
-
-You can see the updated documentation at [LINK].
-
-Thanks for reporting this!
-```
-
-## Good First Issue - Inviting Contribution
-
-```markdown
-Thanks for reporting this! This looks like a good opportunity for a community contribution.
-
-Would you be interested in submitting a fix? Here's how to get started:
-
-1. Check our [CONTRIBUTING.md](link) for guidelines
-2. Fork the repository
-3. Make your changes following our [documentation standards](link)
-4. Submit a pull request
-
-We're here to help if you have questions! If you'd prefer not to contribute, we'll add this to our backlog.
-
-I'm labeling this as `good-first-issue` and `help-wanted`.
-```
-
-## Stale Issue Closure
-
-```markdown
-This issue has been open for 90+ days without activity. To keep our backlog manageable, we're closing this issue.
-
-If this is still relevant, please feel free to:
-- Reopen this issue with updated information
-- Create a new issue with current details
-
-Thanks!
-```
-
-## Acknowledge High Priority
-
-```markdown
-Thanks for reporting this! I can see this is affecting [USER_GROUP] and is [BLOCKING/CAUSING_CONFUSION/etc].
-
-I've labeled this as `P1-high` and added it to our [current sprint/next sprint].
-
-Expected timeline: [TIMELINE]
-We'll update this issue as we make progress.
-
-Thanks for bringing this to our attention!
-```
-
-## Question Answered
-
-```markdown
-Thanks for your question!
-
-[ANSWER_TO_QUESTION]
-
-Does this address your question? If not, please let us know what's still unclear and we'll follow up.
-
-We're also adding a note to improve the documentation in this area so future users don't hit the same confusion.
-
-Related documentation:
-- [LINK_1]
-- [LINK_2]
-```
-
-## Feature Request - Needs Discussion
-
-```markdown
-Thanks for the suggestion! This is an interesting idea.
-
-Before we proceed, we'd like to gather more input:
-- [QUESTION_FOR_COMMUNITY]
-- [QUESTION_FOR_COMMUNITY]
-
-I'm adding the `discussion` label and we'll use this thread to gather feedback.
-
-If others are interested in this, please 👍 the original post and share your use case!
+*Consistent labeling makes triage faster and helps contributors find issues to work on!*
 ```
 
 ---
 
-## Tips for Using Templates
+## GitHub Copilot Tips for This Task
 
-1. **Customize:** Always personalize with specifics from the issue
-2. **Be genuine:** Templates should sound human, not robotic
-3. **Add context:** Include relevant links and references
-4. **Set expectations:** Give timelines when possible
-5. **Thank reporters:** Always acknowledge their effort
+### Generating YAML Templates
 
-## When NOT to Use Templates
+**Use @workspace for consistency:**
 
-- Complex, nuanced situations
-- Sensitive issues
-- When relationship-building is important
-- First-time major contributor
-
-In these cases, write a custom response showing you've invested time understanding the issue.
+```
+@workspace Create a GitHub issue form template matching the style and fields of the existing templates
 ```
 
-### labels.yml
+### Getting Proper Syntax
 
-```yaml
-# GitHub Labels Configuration
-# Apply with: gh label sync -f labels.yml
+**Ask Copilot about syntax:**
 
-# Type Labels
-- name: bug
-  description: "Something is broken or incorrect"
-  color: "d73a4a"
-
-- name: enhancement
-  description: "New feature or improvement"
-  color: "a2eeef"
-
-- name: question
-  description: "User question or help request"
-  color: "d876e3"
-
-- name: documentation
-  description: "Documentation meta issue"
-  color: "0075ca"
-
-- name: typo
-  description: "Spelling or grammar fix"
-  color: "fbca04"
-
-# Priority Labels
-- name: P0-critical
-  description: "Urgent - blocks users"
-  color: "b60205"
-
-- name: P1-high
-  description: "Important - fix soon"
-  color: "d93f0b"
-
-- name: P2-medium
-  description: "Should fix"
-  color: "fbca04"
-
-- name: P3-low
-  description: "Low priority"
-  color: "0e8a16"
-
-# Status Labels
-- name: needs-info
-  description: "Awaiting reporter response"
-  color: "ffffff"
-
-- name: in-progress
-  description: "Currently being worked on"
-  color: "c5def5"
-
-- name: blocked
-  description: "Can't proceed - dependency"
-  color: "e99695"
-
-- name: duplicate
-  description: "Already reported elsewhere"
-  color: "cfd3d7"
-
-- name: wont-fix
-  description: "Won't implement"
-  color: "000000"
-
-# Component Labels
-- name: area:installation
-  description: "Installation documentation"
-  color: "bfd4f2"
-
-- name: area:api
-  description: "API reference docs"
-  color: "bfd4f2"
-
-- name: area:tutorials
-  description: "Tutorial content"
-  color: "bfd4f2"
-
-- name: area:guides
-  description: "How-to guides"
-  color: "bfd4f2"
-
-- name: area:navigation
-  description: "Site structure, menus"
-  color: "bfd4f2"
-
-# Special Labels
-- name: good-first-issue
-  description: "Easy for new contributors"
-  color: "7057ff"
-
-- name: help-wanted
-  description: "Need community help"
-  color: "008672"
-
-- name: quick-win
-  description: "Small effort, high impact"
-  color: "5319e7"
 ```
+@workspace What's the correct YAML syntax for GitHub issue form dropdown fields?
+```
+
+### Creating Saved Replies
+
+**Generate multiple variations:**
+
+```
+@workspace Create 5 different polite ways to request more information from an issue reporter
+```
+
+### Refining Templates
+
+**Iterate and improve:**
+
+```
+@workspace Add a helpful hint/placeholder to each field in this template
+@workspace Make this template more friendly and less intimidating
+```
+
+---
 
 ## Success Criteria
 
-- ✅ Created 3+ issue templates for common scenarios
-- ✅ Documented complete triage process
-- ✅ Created 8+ response templates
-- ✅ Implemented label system configuration
-- ✅ Templates are clear and professional
-- ✅ Process is realistic and sustainable
+You've completed this task when you:
 
-## Hints
-
-<details>
-<summary>Hint 1: Keep Templates Simple</summary>
-
-Templates should guide reporters, not overwhelm them. Ask for essential information only. Optional fields are okay for "nice to have" details.
-</details>
-
-<details>
-<summary>Hint 2: Test Your Templates</summary>
-
-Create a test issue using each template to ensure the formatting works and questions make sense.
-</details>
-
-<details>
-<summary>Hint 3: Make Process Sustainable</summary>
-
-Don't create processes that require heroic effort. If triage takes >5 minutes per issue, simplify.
-</details>
-
-## Time Management
-
-- **Minutes 0-5:** Create issue templates
-- **Minutes 6-10:** Write triage process documentation
-- **Minutes 11-14:** Create response templates
-- **Minutes 14-15:** Create labels configuration
-
-## What's Next?
-
-Move to **Task 3.4** to draft actual responses for your backlog issues and create the final execution plan.
+- ✅ Created bug report template (YAML)
+- ✅ Created feature request template (YAML)
+- ✅ Created documentation issue template (YAML)
+- ✅ Created question template (YAML)
+- ✅ Created template config file
+- ✅ Generated saved reply templates
+- ✅ Created labeling guide with decision tree
+- ✅ Optionally: Created auto-labeling workflow
 
 ---
 
-**Need the solution?** Check [solutions/solution-3.3-templates.md](../solutions/solution-3.3-templates.md)
+## Time Management
+
+- **Minutes 0-5:** Generate bug and feature templates
+- **Minutes 6-10:** Create docs and question templates
+- **Minutes 11-13:** Create config and saved replies
+- **Minutes 14-17:** Generate labeling guide
+- **Minutes 18-20:** Review and refine all templates
+
+---
+
+## What's Next?
+
+After creating templates to prevent future chaos, move to **Task 3.4** where you'll use GitHub Copilot's **issue-to-PR workflow**—the most powerful feature—to automatically fix simple issues!
+
+---
+
+**Need help?** Check [solutions/solution-3.3-templates.md](../solutions/solution-3.3-templates.md) for example templates.

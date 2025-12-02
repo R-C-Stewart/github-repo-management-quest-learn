@@ -1,0 +1,250 @@
+name: Setup Quest PR
+
+# This workflow creates a sample pull request for Scenario 2 (PR Review)
+# Run this manually when setting up the quest for a workshop or demo
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_size:
+        description: 'Size of sample PR'
+        required: true
+        default: 'medium'
+        type: choice
+        options:
+          - small
+          - medium
+          - large
+
+jobs:
+  create-sample-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create feature branch
+        run: |
+          git config user.name "Quest Bot"
+          git config user.email "quest-bot@example.com"
+          git checkout -b quest-sample-pr-$(date +%Y%m%d-%H%M%S)
+
+      - name: Make sample documentation changes
+        run: |
+          # Create a sample change to demonstrate PR review
+          mkdir -p docs/sample-changes
+
+          # Add a new tutorial file
+          cat > docs/sample-changes/new-tutorial.md << 'EOF'
+          # Advanced Integration Tutorial
+
+          This tutorial shows you how to integrate TechFlow with external services.
+
+          ## Prerequisites
+          - TechFlow 2.1.0 or later
+          - API key configured
+          - Basic Python knowledge
+
+          ## Step 1: Setup Integration
+
+          First, install the integration package:
+
+          ```bash
+          pip install techflow-integrations
+          ```
+
+          ## Step 2: Configure Connection
+
+          Create a configuration file:
+
+          ```python
+          from techflow import Client
+          from techflow.integrations import ServiceConnector
+
+          client = Client(api_key='your_key')
+          connector = ServiceConnector(client)
+          ```
+
+          ## Step 3: Test Connection
+
+          Verify the integration works:
+
+          ```python
+          result = connector.test_connection()
+          print(result)
+          ```
+
+          ## Common Issues
+
+          ### Connection Timeout
+          If you see timeout errors, increase the timeout value:
+
+          ```python
+          connector = ServiceConnector(client, timeout=60)
+          ```
+
+          ### Authentication Failed
+          Make sure your API key has integration permissions.
+
+          ## Next Steps
+
+          - Try the error handling guide
+          - Explore advanced features
+          - Read the API reference
+          EOF
+
+          # Modify an existing file (simulate update)
+          echo "" >> README.md
+          echo "## Recent Updates" >> README.md
+          echo "" >> README.md
+          echo "- Added advanced integration tutorial" >> README.md
+          echo "- Updated API documentation" >> README.md
+
+          # Add a file with an intentional issue (for review practice)
+          cat > docs/sample-changes/quick-reference.md << 'EOF'
+          # Quick Reference Guide
+
+          ## Installation
+
+          Requires Python 2.7 or later
+
+          ## Basic Commands
+
+          ```
+          techflow init
+          techflow start
+          techflow stop
+          ```
+
+          ## Configuration
+
+          Edit the config file located at: ~/techflow/config.yml
+
+          ## Links
+
+          - [Setup Guide](guides/legacy-setup.md)
+          - [API Docs](http://old-docs.example.com)
+
+          ## Troubleshooting
+
+          If you experiance issues, check the logs.
+          EOF
+
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Add new documentation and tutorials
+
+          This PR adds:
+          - New advanced integration tutorial
+          - Quick reference guide
+          - Updates to README
+
+          Changes include:
+          - Step-by-step integration examples
+          - Common troubleshooting tips
+          - Updated navigation links
+
+          Closes #123"
+
+      - name: Push branch
+        run: |
+          git push origin HEAD
+
+      - name: Create Pull Request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branch = await github.rest.repos.getBranch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              branch: context.ref.replace('refs/heads/', '')
+            });
+
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '[Quest Sample] Add advanced integration tutorials',
+              head: branch.data.name,
+              base: 'main',
+              body: `## Description
+
+          This PR adds comprehensive integration documentation for TechFlow, including:
+
+          - New advanced integration tutorial
+          - Quick reference guide for common commands
+          - Updated README with recent changes
+
+          ## Changes Made
+
+          ### New Files
+          - \`docs/sample-changes/new-tutorial.md\` - Step-by-step integration guide
+          - \`docs/sample-changes/quick-reference.md\` - Quick command reference
+
+          ### Modified Files
+          - \`README.md\` - Added recent updates section
+
+          ## Testing
+          - [x] All code examples tested
+          - [x] Links verified
+          - [x] Spell checked
+          - [ ] Reviewed by documentation team
+
+          ## Screenshots
+          N/A - Documentation only
+
+          ## Notes for Reviewers
+
+          Please pay special attention to:
+          - Technical accuracy of integration examples
+          - Completeness of troubleshooting section
+          - Link validity
+
+          ## Related Issues
+          Closes #123
+
+          ---
+
+          **⚠️ This is a sample PR for Quest Scenario 2**
+
+          This PR intentionally includes some issues for review practice:
+          - Outdated Python version reference (Python 2.7)
+          - Broken link to legacy-setup.md
+          - Link to old domain (old-docs.example.com)
+          - Typo: "experiance" instead of "experience"
+
+          Use GitHub Copilot to:
+          1. Review this PR with @workspace
+          2. Identify the issues
+          3. Generate constructive feedback
+          4. Suggest fixes`,
+              labels: ['quest-sample', 'documentation']
+            });
+
+            console.log(\`✅ Created sample PR #\${pr.data.number}\`);
+            console.log(\`URL: \${pr.data.html_url}\`);
+
+      - name: Summary
+        run: |
+          echo "✅ Sample PR created for Quest Scenario 2"
+          echo ""
+          echo "This PR demonstrates:"
+          echo "  - New documentation files"
+          echo "  - Updates to existing files"
+          echo "  - Intentional issues for review practice"
+          echo ""
+          echo "Issues included for practice:"
+          echo "  - Outdated version reference (Python 2.7)"
+          echo "  - Broken internal link"
+          echo "  - Link to old domain"
+          echo "  - Typo in content"
+          echo ""
+          echo "Participants can practice:"
+          echo "  - PR review with @workspace"
+          echo "  - Finding cross-file impacts"
+          echo "  - Generating feedback with Copilot"
+          echo "  - Creating fix suggestions"

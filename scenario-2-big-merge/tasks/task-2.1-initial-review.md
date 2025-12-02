@@ -1,193 +1,329 @@
-# Task 2.1: High-Level PR Review
+# Task 2.1: Initial PR Review with GitHub Copilot
 
 **Duration:** 15 minutes
 **Difficulty:** Intermediate
+**GitHub Copilot Features:** @workspace, GitHub.com PR summary, Copilot Chat
 
 ## Objective
 
-Perform an initial high-level review of Pull Request #127 to understand the scope, goals, and overall quality before diving into detailed analysis.
+Perform an initial high-level review of Pull Request #127 using GitHub Copilot's PR summary features and @workspace analysis to understand the scope, goals, and overall quality before diving into detailed review.
 
 ## Context
 
-When reviewing a large PR (+847/-312 lines across 18 files), you can't read every line carefully in the time available. You need to work smarter by understanding the big picture first, then focusing your detailed review on high-risk areas.
+When reviewing a large PR (+847/-312 lines across 18 files), you can't read every line carefully. GitHub Copilot provides powerful features to help you understand PRs quickly:
+- **GitHub.com PR Summary**: Native AI-powered PR summaries directly in the GitHub interface
+- **@workspace Analysis**: VS Code integration to analyze PR changes in full repository context
+- **Change Impact Analysis**: Understanding how PR changes affect the broader codebase
 
-## Your Challenge
+This task shows you how to use GitHub Copilot to work smarter, understanding the big picture before focusing on high-risk areas.
 
-Create a high-level assessment of this PR that guides your detailed review and helps you provide informed feedback quickly.
+## Setup
+
+### For This Task You'll Use:
+
+1. **VS Code with the PR Files:**
+   ```bash
+   cd scenario-2-big-merge/pr-content
+   code .
+   ```
+
+2. **Open Copilot Chat:**
+   - Press `Ctrl+Shift+I` (Windows/Linux) or `Cmd+Shift+I` (Mac)
+
+3. **Review Materials:**
+   - `PR_DESCRIPTION.md` (the pull request description)
+   - Files in `changed-files/` (the modified/new content)
+   - `FILE_LIST.md` (complete list of changes)
+
+**Note:** In a real scenario, you would use GitHub's native PR summary feature directly on GitHub.com. For this quest, we'll simulate that workflow using the PR content files provided.
 
 ## Tasks
 
-### 1. Understand the PR Objectives
+### 1. Generate PR Overview with @workspace
 
-**Prompt your AI to:**
-- Summarize the stated purpose of the PR
-- Identify what new features or content are being added
-- Understand why this change is needed (based on PR description)
+**GitHub Copilot Chat Prompt:**
 
-**Example AI Prompt:**
 ```
-Review this pull request description and the list of changed files:
+@workspace I'm reviewing a pull request with these changes:
 
-PR Title: "Major documentation update - new features and restructuring"
-PR Description: [Include the PR description from pr-content/PR_DESCRIPTION.md]
+[Open and share PR_DESCRIPTION.md and FILE_LIST.md with Copilot]
 
-Changed Files:
-[List all changed files from pr-content/]
+Analyze this PR and provide:
+1. A 2-3 sentence summary of what this PR accomplishes
+2. The main categories of changes (new features, updates, refactoring, deletions)
+3. Why this change is needed (based on the description)
+4. Whether the scope seems appropriate for a single PR or should be split
+5. The overall complexity level (low/medium/high)
 
-Provide:
-1. A 2-3 sentence summary of what this PR is trying to accomplish
-2. The main categories of changes (new content, updates, restructuring, etc.)
-3. Why this change appears to be needed
-4. Whether the scope seems appropriate for a single PR
+Format as a structured markdown summary.
 ```
 
-**Deliverable:** Create `pr-review.md` with a "PR Overview" section
+**What Copilot Does:**
+- Analyzes the PR description and file changes
+- Identifies the core objectives
+- Assesses scope appropriateness
+- Provides context about the change's purpose
 
-### 2. Assess the Change Scope
+**Using GitHub.com PR Summary Feature:**
 
-**Prompt your AI to:**
-- Categorize the changes by type (additions, modifications, deletions)
-- Identify high-risk changes (breaking changes, major restructuring)
-- Flag any scope concerns (PR trying to do too much)
+In a real-world scenario with an actual PR on GitHub.com:
+1. Navigate to the PR page on GitHub
+2. Look for the "Copilot" button or "Summary" option in the PR header
+3. Click to get an AI-generated PR summary
+4. Use this as your starting point for review
 
-**Example AI Prompt:**
+**Deliverable:** Create `pr-review.md` with "PR Overview" section
+
+---
+
+### 2. Analyze Change Scope and Impact
+
+**GitHub Copilot Chat Prompt:**
+
 ```
-Analyze these file changes:
+@workspace For this PR, analyze the file changes:
 
-New Files:
+New Files (3):
 - tutorials/advanced-integrations.md
 - tutorials/error-handling-guide.md
 - tutorials/workflow-optimization.md
 
-Modified Files:
-- docs/getting-started.md (+45, -12)
-- docs/api-reference.md (+123, -67)
-- docs/quick-start.md (+32, -8)
-[Include all modified files with line changes]
+Modified Files (8):
+[Paste the modified files list from FILE_LIST.md]
 
-Deleted Files:
+Deleted Files (1):
 - guides/legacy-setup.md
 
-Categorize these changes:
-1. What types of changes are these? (new content, updates, refactoring, fixes)
-2. Which changes are high-risk? (could break existing links, workflows, etc.)
-3. Is this PR appropriately scoped? Should it be split up?
-4. What areas need the most careful review?
+Provide:
+1. Categorization by change type (new content, content updates, restructuring, deletions)
+2. Risk assessment for each category (low/medium/high risk)
+3. Files that are high-risk and need careful review
+4. Potential breaking changes (links, navigation, APIs)
+5. Is this PR appropriately scoped or trying to do too much?
+6. What areas need the most careful review?
+
+Present as a table and risk assessment.
+```
+
+**What Copilot Does:**
+- Categorizes changes by type and risk
+- Identifies high-risk areas
+- Flags potential breaking changes
+- Assesses PR scope appropriateness
+
+**Follow-up to Understand Dependencies:**
+
+```
+@workspace If we delete guides/legacy-setup.md, what other files in this repository might reference it? What will break?
 ```
 
 **Deliverable:** Add "Change Scope Analysis" section to `pr-review.md`
 
-### 3. Quick Quality Spot Check
+---
 
-**Prompt your AI to:**
-- Sample 2-3 files from the PR
-- Look for obvious quality issues
-- Assess overall writing quality and consistency
+### 3. Spot Check Content Quality
 
-**Example AI Prompt:**
+**GitHub Copilot Chat Prompt:**
+
 ```
-Perform a quick quality spot check on these files from the PR:
+@workspace I'm spot-checking quality for this PR. Review these sample files:
 
-[Share 2-3 files - one new, one modified, one with significant changes]
+[Share 2-3 files from changed-files/ - one new tutorial, one modified doc, one with significant changes]
 
-Check for:
-1. Writing quality (clarity, grammar, style)
-2. Formatting consistency (headings, code blocks, lists)
-3. Obvious technical errors or outdated information
-4. Completeness (sections that seem unfinished)
-5. Code examples (do they look correct and well-documented?)
+For each file, check:
+1. Writing quality (clarity, grammar, professionalism)
+2. Formatting consistency (headings, code blocks, lists follow standards)
+3. Technical accuracy (code examples, commands, version references)
+4. Completeness (no TODO markers, all sections finished)
+5. Code examples (properly formatted, appear functional)
 
-Based on this sample, what's your overall quality assessment?
-Are there patterns of issues that might exist throughout the PR?
+Provide:
+- Individual assessment for each file
+- Overall quality rating
+- Patterns of issues that might exist across the PR
+- Specific examples of good and bad practices found
 ```
+
+**What Copilot Does:**
+- Reviews writing quality and clarity
+- Checks formatting standards
+- Identifies technical issues
+- Finds patterns that may affect other files
+
+**Using Inline Copilot for Quick Checks:**
+
+1. Open a sample file from the PR
+2. Select a section you want to check
+3. Press `Ctrl+I` (Cmd+I)
+4. Ask: "Is this technically accurate and well-written?"
+5. Review Copilot's feedback
 
 **Deliverable:** Add "Initial Quality Assessment" section to `pr-review.md`
 
-### 4. Identify Potential Issues
+---
 
-**Prompt your AI to:**
-- Look for common PR issues (broken links, inconsistent style, missing updates)
-- Flag files that need extra attention
-- Identify dependencies between changes
+### 4. Identify Cross-File Impact and Risks
 
-**Example AI Prompt:**
+**GitHub Copilot Chat Prompt:**
+
 ```
-Based on this PR changing 18 files including restructuring:
+@workspace This PR makes significant changes across 18 files, including restructuring and deletions.
 
-[Share file list and types of changes]
+Changed files:
+[Reference FILE_LIST.md]
 
-What potential issues should I watch for?
+What potential issues should I watch for during detailed review?
 
-Consider:
-1. Broken links (files moved/deleted, references not updated)
-2. Navigation issues (TOC, menus, breadcrumbs out of sync)
-3. Inconsistent style (mixing old and new conventions)
-4. Missing updates (updating A but not related B)
+Analyze for:
+1. Broken links (deleted/moved files, references not updated)
+2. Navigation issues (TOCs, menus, cross-references out of sync)
+3. Inconsistent style (mixing old and new formatting conventions)
+4. Missing coordinated updates (updating A but not related B)
 5. Version mismatches (code examples using different versions)
 6. Orphaned content (references to deleted content)
+7. Impact on existing documentation outside this PR
 
-List the top 5-7 risks I should validate during detailed review.
+For each risk, specify:
+- What to check
+- Which files are affected
+- How to validate
+- Priority level (P0-P3)
+```
+
+**What Copilot Does:**
+- Identifies cross-file dependencies
+- Flags potential broken links
+- Finds navigation inconsistencies
+- Highlights missing updates
+
+**Advanced @workspace Query:**
+
+```
+@workspace Are there any files in the repository (not in this PR) that link to or depend on guides/legacy-setup.md which is being deleted?
 ```
 
 **Deliverable:** Add "Risk Areas to Review" section to `pr-review.md`
 
-### 5. Plan Your Review Strategy
+---
 
-**Use AI to help you:**
-- Prioritize which files to review in detail
-- Decide what to check manually vs with tools
-- Estimate time needed for thorough review
+### 5. Create a Time-Boxed Review Strategy
 
-**Example AI Prompt:**
+**GitHub Copilot Chat Prompt:**
+
 ```
-Given this PR with 18 files and 45 minutes available for detailed review:
+@workspace Based on my analysis so far, help me create an efficient review strategy.
 
-High-risk files:
-[List files identified as high-risk]
+High-risk files identified:
+[List files Copilot identified as high-risk]
 
 New content files:
 [List new tutorials/docs]
 
-Minor updates:
+Minor update files:
 [List files with small changes]
 
-Create a review strategy:
-1. Which files should I review in detail? (priority order)
-2. Which files only need a quick scan?
-3. What should I check with automated tools?
-4. What requires manual validation?
-5. How should I allocate my 45 minutes?
+I have 45 minutes for detailed review. Create a prioritized review plan:
 
-Provide a time-boxed review plan.
+1. Which files MUST be reviewed in detail? (list in priority order)
+2. Which files only need a quick scan?
+3. What should I check with automated tools vs manual review?
+4. What specific items require manual validation?
+5. How should I allocate my 45 minutes across these activities?
+
+Provide a concrete time-boxed plan with checkboxes I can follow.
 ```
+
+**What Copilot Does:**
+- Prioritizes files by risk and importance
+- Allocates time based on complexity
+- Separates automated vs manual checks
+- Creates actionable review checklist
 
 **Deliverable:** Add "Review Strategy" section to `pr-review.md`
 
-### 6. Initial Recommendation
+---
 
-**Prompt your AI to:**
-- Make a preliminary assessment (likely approve, likely needs changes, needs major revision)
-- Identify deal-breakers vs nice-to-haves
-- Set expectations for the review
+### 6. Make Preliminary Assessment
 
-**Example AI Prompt:**
+**GitHub Copilot Chat Prompt:**
+
 ```
-Based on this high-level review:
+@workspace Based on this high-level review:
 
-[Share your findings so far]
+PR Objectives:
+[Summarize from overview]
 
-Provide a preliminary assessment:
+Scope Analysis:
+[Key findings]
 
-1. Initial recommendation (approve, request changes, needs major work)
-2. Confidence level in this assessment
-3. Main concerns that could change the recommendation
+Quality Spot Check:
+[Quality assessment]
+
+Risk Areas:
+[Major risks identified]
+
+Provide a preliminary PR assessment:
+
+1. Initial recommendation (Approve / Request Changes / Needs Major Work)
+2. Confidence level in this assessment (High/Medium/Low)
+3. Top 3 concerns that could change the recommendation
 4. What would make this an easy approval?
-5. What are the deal-breakers that must be fixed?
+5. Deal-breakers that MUST be fixed before merge
+6. Estimated effort for the PR author to address feedback
 
-Note: This is preliminary - detailed review may change this.
+Note: This is preliminary - detailed review may change this assessment.
 ```
+
+**What Copilot Does:**
+- Synthesizes all findings into a recommendation
+- Identifies blockers vs nice-to-haves
+- Sets clear expectations
+- Helps you communicate findings
+
+**Polish Your Assessment:**
+
+1. Select your preliminary assessment text
+2. Press `Ctrl+I` (Cmd+I)
+3. Ask: "Make this more diplomatic and constructive"
+4. Review and accept improvements
 
 **Deliverable:** Add "Preliminary Assessment" section to `pr-review.md`
+
+---
+
+## Using GitHub.com's Native PR Features
+
+### GitHub Copilot PR Summary (Real-World Workflow)
+
+When reviewing actual PRs on GitHub.com:
+
+1. **Navigate to the PR**
+   ```bash
+   gh pr view 127 --web
+   ```
+
+2. **Click the "Copilot" or "Summary" Button**
+   - Located in the PR header or sidebar
+   - Generates AI-powered summary of changes
+
+3. **Review the Auto-Generated Summary:**
+   - Main changes overview
+   - Files modified by category
+   - Potential issues flagged
+   - Testing suggestions
+
+4. **Use Copilot Chat for Deeper Analysis**
+   - Click "Open in Copilot Chat" for interactive Q&A
+   - Ask follow-up questions about specific changes
+   - Request impact analysis
+
+**Example Questions in GitHub PR Copilot:**
+- "What are the main changes in this PR?"
+- "What files have the highest risk?"
+- "Are there any breaking changes?"
+- "What should I focus on during review?"
+
+---
 
 ## Output Format
 
@@ -199,14 +335,15 @@ Your `pr-review.md` should follow this structure:
 **Reviewer:** [Your Name]
 **Date:** [Date]
 **PR Title:** Major documentation update - new features and restructuring
-**Status:** In Review
+**Status:** Initial Review Complete
+**Reviewed with:** GitHub Copilot @workspace
 
 ---
 
 ## PR Overview
 
 ### Summary
-[2-3 sentences describing what this PR does]
+[2-3 sentences describing what this PR does - from Copilot]
 
 ### Objectives
 - [Objective 1]
@@ -214,7 +351,12 @@ Your `pr-review.md` should follow this structure:
 - [Objective 3]
 
 ### Justification
-[Why is this change needed?]
+[Why is this change needed? - Copilot's analysis]
+
+### Scope Assessment
+[Copilot's assessment of whether PR is appropriately scoped]
+
+**Complexity Level:** [Low/Medium/High]
 
 ---
 
@@ -222,176 +364,278 @@ Your `pr-review.md` should follow this structure:
 
 ### Changes by Type
 
-| Type | Count | Files |
-|------|-------|-------|
-| New Files | 3 | tutorials/... |
-| Modified Files | 8 | docs/... |
-| Deleted Files | 1 | guides/legacy-setup.md |
-| **Total** | **12** | |
+| Type | Count | Risk Level | Files |
+|------|-------|------------|-------|
+| New Files | 3 | Medium | tutorials/... |
+| Modified Files | 8 | High | docs/api-reference.md, ... |
+| Deleted Files | 1 | High | guides/legacy-setup.md |
+| **Total** | **12** | | |
 
 ### Change Categories
-- **New Content (40%):** 3 new tutorials
-- **Updates (45%):** API reference, getting started, quick start
-- **Refactoring (10%):** Navigation restructuring
-- **Deletions (5%):** Removing outdated content
+- **New Content (40%):** 3 new tutorials on integrations, error handling, workflow optimization
+- **Content Updates (45%):** API reference, getting started, quick start guides
+- **Restructuring (10%):** Navigation and organization changes
+- **Deletions (5%):** Removing outdated legacy setup guide
 
-### Scope Assessment
-[Is this appropriately scoped? Too broad? Should be split?]
+### High-Risk Changes
+
+**File Deletions:**
+- `guides/legacy-setup.md` - May have existing links
+- **Action:** Validate no broken references
+
+**Major Content Changes:**
+- `docs/api-reference.md` (+123, -67 lines)
+- **Risk:** Breaking changes to API documentation
+- **Action:** Verify technical accuracy
 
 ---
 
 ## Initial Quality Assessment
 
 ### Sample Files Reviewed
-1. [File 1] - [Brief assessment]
-2. [File 2] - [Brief assessment]
-3. [File 3] - [Brief assessment]
+
+#### 1. tutorials/advanced-integrations.md (New)
+- **Writing Quality:** ✅ Professional, clear
+- **Formatting:** ✅ Consistent, proper headings
+- **Technical Accuracy:** ⚠️  Need to verify code examples
+- **Completeness:** ✅ All sections complete
+
+#### 2. docs/api-reference.md (Modified - Major)
+- **Writing Quality:** ✅ Good
+- **Formatting:** ⚠️  Some inconsistent code block languages
+- **Technical Accuracy:** ❓ Needs validation
+- **Completeness:** ✅ Complete
+
+#### 3. docs/quick-start.md (Modified - Minor)
+- **Writing Quality:** ✅ Excellent
+- **Formatting:** ✅ Perfect
+- **Technical Accuracy:** ✅ Appears accurate
+- **Completeness:** ✅ Complete
 
 ### Overall Quality
-- **Writing Quality:** [Rating/Description]
-- **Technical Accuracy:** [Rating/Description]
-- **Formatting Consistency:** [Rating/Description]
-- **Completeness:** [Rating/Description]
+- **Writing Quality:** 4/5 - Generally professional and clear
+- **Technical Accuracy:** 3/5 - Needs verification in detailed review
+- **Formatting Consistency:** 3.5/5 - Some minor issues
+- **Completeness:** 5/5 - No incomplete sections found
 
 ### Observed Patterns
-- [Pattern 1]
-- [Pattern 2]
-- [Pattern 3]
+- Code blocks occasionally missing language specifiers
+- Generally high quality content
+- Some sections could be more concise
+- Good use of examples and diagrams
 
 ---
 
 ## Risk Areas to Review
 
-1. **[Risk Category 1]**
-   - What: [Description]
-   - Why it matters: [Impact]
-   - Files affected: [List]
+### 1. Broken Links from Deleted Files (Priority: P0)
+- **What:** `guides/legacy-setup.md` is deleted
+- **Why it matters:** Other docs may link to this file
+- **Files potentially affected:** All guides, getting started, FAQs
+- **Validation:** Search for "legacy-setup" references across all docs
+- **Tool:** @workspace to find all references
 
-2. **[Risk Category 2]**
-   - [Similar structure]
+### 2. API Documentation Accuracy (Priority: P0)
+- **What:** Major changes to api-reference.md
+- **Why it matters:** Incorrect API docs break developer trust
+- **Files affected:** docs/api-reference.md, related examples
+- **Validation:** Test code examples, verify endpoints
+- **Tool:** Manual testing + Copilot review
 
-[Continue with 5-7 risks]
+### 3. Cross-Reference Consistency (Priority: P1)
+- **What:** Restructuring may break internal links
+- **Why it matters:** Navigation and user experience
+- **Files affected:** All modified docs
+- **Validation:** Link checker + manual verification
+- **Tool:** markdown-link-check, @workspace
+
+### 4. Version Consistency (Priority: P1)
+- **What:** Code examples may reference different versions
+- **Why it matters:** Confuses users about which version to use
+- **Files affected:** All tutorials and examples
+- **Validation:** Check all version references match
+- **Tool:** @workspace search
+
+### 5. Navigation and TOC Updates (Priority: P2)
+- **What:** New tutorials may not be in navigation
+- **Why it matters:** Users won't find new content
+- **Files affected:** README.md, navigation files
+- **Validation:** Check all nav elements updated
+- **Tool:** Manual review
 
 ---
 
 ## Review Strategy
 
-### Priority 1: Detailed Review (30 min)
-- [ ] File 1 - [Reason for priority]
-- [ ] File 2 - [Reason for priority]
-- [ ] File 3 - [Reason for priority]
+### Time Allocation (45 minutes total)
 
-### Priority 2: Quick Review (10 min)
-- [ ] Files with minor updates
-- [ ] Formatting and style consistency
+#### Priority 1: Critical Reviews (25 min)
+- [ ] **docs/api-reference.md** (10 min) - Verify technical accuracy of major changes
+- [ ] **Search for broken links** (8 min) - @workspace query for deleted file references
+- [ ] **tutorials/advanced-integrations.md** (7 min) - Review new content quality
 
-### Priority 3: Automated Checks (5 min)
-- [ ] Run link checker
-- [ ] Run markdown linter
-- [ ] Validate code examples (if possible)
+#### Priority 2: Important Reviews (12 min)
+- [ ] **docs/getting-started.md** (4 min) - Check consistency
+- [ ] **tutorials/error-handling-guide.md** (4 min) - Review new content
+- [ ] **tutorials/workflow-optimization.md** (4 min) - Review new content
+
+#### Priority 3: Quick Scans (5 min)
+- [ ] Minor update files (quick-start.md, etc.)
+- [ ] Formatting consistency check across all files
+
+#### Automated Checks (3 min)
+- [ ] Run markdown link checker on all changed files
+- [ ] Run markdown linter to check formatting
+- [ ] Search for TODO/FIXME markers
 
 ### Manual Validation Required
-- [ ] Cross-reference checks
-- [ ] Navigation updates
-- [ ] Technical accuracy of examples
+- [ ] Test API code examples
+- [ ] Verify all cross-references
+- [ ] Check navigation includes new tutorials
+- [ ] Confirm version numbers consistent
+
+### Copilot-Assisted Validation
+```
+@workspace Find all references to guides/legacy-setup.md
+@workspace Check if navigation files include the new tutorials
+@workspace Search for version number references - are they consistent?
+```
 
 ---
 
 ## Preliminary Assessment
 
-**Initial Recommendation:** [Approve / Request Changes / Needs Major Work]
+**Initial Recommendation:** Request Changes
 
-**Confidence:** [High / Medium / Low]
+**Confidence:** Medium (need detailed review to confirm)
 
 **Main Concerns:**
-1. [Concern 1]
-2. [Concern 2]
-3. [Concern 3]
+1. **Deleted file impact:** Must verify no broken links from deleting legacy-setup.md
+2. **API accuracy:** Major API reference changes need validation
+3. **Missing navigation updates:** New tutorials may not be discoverable
 
 **Potential Deal-Breakers:**
-- [Issue that would block merge]
-- [Another critical issue]
+- Broken links from deleted file (if many exist)
+- Technically incorrect API documentation
+- Untested code examples that don't work
 
 **Path to Approval:**
-- [What needs to happen]
-- [Key items to verify]
+- Fix all broken links
+- Validate API documentation accuracy
+- Update navigation to include new tutorials
+- Test all code examples
+- Address formatting inconsistencies
+
+**Estimated Effort for Author:**
+- If only minor issues: 1-2 hours
+- If broken links widespread: 3-4 hours
+- If API docs have errors: 4-6 hours
 
 ---
 
 ## Next Steps
 
-1. Proceed with detailed content review (Task 2.2)
-2. Validate cross-references (Task 2.3)
-3. Compile comprehensive feedback (Task 2.4)
+1. ✅ High-level review complete
+2. ⏭️ Proceed with detailed content review (Task 2.2)
+3. ⏭️ Validate cross-references and links (Task 2.3)
+4. ⏭️ Compile comprehensive feedback (Task 2.4)
 
 ---
 
-*This is a preliminary assessment based on high-level review. Detailed analysis may reveal additional issues or confirm this assessment.*
+## Copilot Queries Used
+
+Document the @workspace queries that were most helpful:
+
+1. `@workspace Analyze this PR and summarize the changes`
+2. `@workspace Find all references to guides/legacy-setup.md`
+3. `@workspace Are there version inconsistencies in code examples?`
+4. `@workspace Which files would be impacted by these changes?`
+
+---
+
+*This is a preliminary assessment based on high-level review with GitHub Copilot. Detailed analysis may reveal additional issues or confirm this assessment.*
 ```
+
+---
+
+## GitHub Copilot Tips for This Task
+
+### Effective @workspace Usage for PR Review
+
+**Do:**
+- Start with broad questions, then narrow down
+- Ask about cross-file impacts and dependencies
+- Request specific file lists and references
+- Use @workspace to understand repository context
+
+**Example Progression:**
+1. `@workspace Summarize this PR`
+2. `@workspace What files reference the deleted file?`
+3. `@workspace Check if navigation is updated`
+4. `@workspace Find version number inconsistencies`
+
+### Using GitHub's Native PR Summary
+
+**When available on GitHub.com:**
+- Use as your starting point (saves 5-10 minutes)
+- Validate AI summary with your own spot checks
+- Ask follow-up questions in Copilot Chat
+- Compare AI findings with your analysis
+
+### Iterative Review Approach
+
+Don't try to catch everything at once:
+1. **First pass:** Understand what changed (use Copilot)
+2. **Second pass:** Identify risks (use @workspace)
+3. **Third pass:** Spot check quality (sample files)
+4. **Fourth pass:** Plan detailed review (prioritize)
+
+---
 
 ## Success Criteria
 
 You've completed this task when you:
 
-- ✅ Understand the PR's purpose and goals
-- ✅ Know which files are most critical to review
-- ✅ Identified potential risk areas
-- ✅ Have a time-boxed review plan
-- ✅ Made a preliminary recommendation
+- ✅ Used @workspace to understand PR scope and objectives
+- ✅ Identified high-risk files requiring detailed review
+- ✅ Conducted quality spot checks on sample files
+- ✅ Found potential cross-file issues and broken links
+- ✅ Created a time-boxed review strategy
+- ✅ Made a preliminary recommendation with clear reasoning
 - ✅ Can explain the PR to someone else in 2 minutes
-
-## Hints
-
-<details>
-<summary>Hint 1: Read the PR Description Carefully</summary>
-
-The PR description (if well-written) should tell you exactly what changed and why. Use this as your anchor for reviewing if changes match intentions.
-</details>
-
-<details>
-<summary>Hint 2: Use the File List as a Map</summary>
-
-The list of changed files tells a story:
-- New files = new features
-- Deleted files = cleanup (watch for orphaned links!)
-- Modified files = updates or fixes
-- Many files in same directory = coordinated change
-</details>
-
-<details>
-<summary>Hint 3: Sample, Don't Read Everything</summary>
-
-You can't read 847 added lines in detail. Sample strategically:
-- One new file (quality of new content)
-- One heavily modified file (quality of updates)
-- One lightly modified file (scope of changes)
-
-Patterns you find in samples likely exist elsewhere.
-</details>
-
-<details>
-<summary>Hint 4: Think About Dependencies</summary>
-
-Ask: "If file A changes, what else should change?"
-- Updated API docs → Update examples
-- New tutorial → Update navigation
-- Deleted file → Update all references
-
-Missing dependent changes are a major PR issue.
-</details>
-
-## Time Management
-
-- **Minutes 0-3:** Read PR description and understand objectives
-- **Minutes 4-6:** Analyze change scope and categorize files
-- **Minutes 7-10:** Spot check 2-3 files for quality
-- **Minutes 11-13:** Identify risk areas and potential issues
-- **Minutes 14-15:** Create review strategy and preliminary assessment
-
-## What's Next?
-
-After completing your high-level review, you'll move to **Task 2.2** where you'll conduct a detailed content review of the high-priority files you've identified.
 
 ---
 
-**Need the solution?** Check [solutions/solution-2.1-initial-review.md](../solutions/solution-2.1-initial-review.md) when you're ready.
+## Time Management
+
+- **Minutes 0-3:** Use @workspace to generate PR overview and understand objectives
+- **Minutes 4-7:** Analyze change scope and assess risk levels with Copilot
+- **Minutes 8-11:** Spot check 2-3 files with Copilot assistance
+- **Minutes 11-13:** Identify cross-file risks and impacts with @workspace
+- **Minutes 14-15:** Create review strategy and make preliminary assessment
+
+---
+
+## What's Next?
+
+After completing your high-level review, you'll move to **Task 2.2** where you'll use GitHub Copilot to conduct detailed content review of the high-priority files you've identified.
+
+---
+
+## Troubleshooting
+
+**Problem:** @workspace doesn't see the PR files
+**Solution:** Make sure you've opened the `pr-content` folder in VS Code, not just individual files
+
+**Problem:** Copilot's PR summary is too generic
+**Solution:** Provide more context in your prompts:
+- Share the PR description
+- List specific files changed
+- Ask targeted questions
+
+**Problem:** Can't access GitHub.com PR summary feature
+**Solution:** For this quest, use @workspace in VS Code with the provided PR files. In real scenarios, ensure you're logged into GitHub Copilot on GitHub.com.
+
+---
+
+**Need help?** Check [solutions/solution-2.1-initial-review.md](../solutions/solution-2.1-initial-review.md) for example Copilot interactions and expected outputs.

@@ -1,0 +1,134 @@
+name: Cleanup Quest Samples
+
+# This workflow removes sample issues and PRs after a workshop
+# Run this manually to clean up after completing the quest
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type DELETE to confirm cleanup'
+        required: true
+
+jobs:
+  cleanup-samples:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Verify confirmation
+        run: |
+          if [ "${{ github.event.inputs.confirm }}" != "DELETE" ]; then
+            echo "❌ Confirmation failed. You must type DELETE to proceed."
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Close sample issues
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'quest-sample',
+              state: 'open'
+            });
+
+            console.log(`Found ${issues.data.length} sample issues to close`);
+
+            for (const issue of issues.data) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed'
+              });
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: '🧹 Closing sample issue after quest completion. This was created for demonstration purposes.'
+              });
+
+              console.log(`✅ Closed issue #${issue.number}`);
+            }
+
+      - name: Close sample PRs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open'
+            });
+
+            const samplePRs = prs.data.filter(pr =>
+              pr.labels.some(label => label.name === 'quest-sample')
+            );
+
+            console.log(`Found ${samplePRs.length} sample PRs to close`);
+
+            for (const pr of samplePRs) {
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: pr.number,
+                state: 'closed'
+              });
+
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                body: '🧹 Closing sample PR after quest completion. This was created for demonstration purposes.'
+              });
+
+              console.log(`✅ Closed PR #${pr.number}`);
+            }
+
+      - name: Delete sample branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const branches = await github.rest.repos.listBranches({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+
+            const sampleBranches = branches.data.filter(branch =>
+              branch.name.startsWith('quest-sample-')
+            );
+
+            console.log(`Found ${sampleBranches.length} sample branches to delete`);
+
+            for (const branch of sampleBranches) {
+              try {
+                await github.rest.git.deleteRef({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  ref: `heads/${branch.name}`
+                });
+                console.log(`✅ Deleted branch ${branch.name}`);
+              } catch (error) {
+                console.log(`⚠️  Could not delete branch ${branch.name}: ${error.message}`);
+              }
+            }
+
+      - name: Summary
+        run: |
+          echo "✅ Cleanup complete"
+          echo ""
+          echo "Cleaned up:"
+          echo "  - All issues labeled 'quest-sample'"
+          echo "  - All PRs labeled 'quest-sample'"
+          echo "  - All branches starting with 'quest-sample-'"
+          echo ""
+          echo "Your repository is now clean and ready for the next workshop!"

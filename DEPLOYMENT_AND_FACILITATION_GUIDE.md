@@ -12,8 +12,9 @@ This guide explains how to deploy this quest and facilitate it as a live demo or
 2. [Self-Paced Deployment](#self-paced-deployment)
 3. [Workshop/Live Demo Setup](#workshoplive-demo-setup)
 4. [Facilitation Guide](#facilitation-guide)
-5. [Technical Setup](#technical-setup)
-6. [Troubleshooting](#troubleshooting)
+5. [Automated Quest Setup (GitHub Actions)](#automated-quest-setup-github-actions)
+6. [Technical Setup](#technical-setup)
+7. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -61,19 +62,39 @@ Option B - Download ZIP:
 
 1. **Install Required Tools:**
    - Git client
-   - Text editor (VS Code recommended)
-   - AI assistant (choose one):
-     - GitHub Copilot (VS Code extension)
-     - Claude account (claude.ai)
-     - ChatGPT Plus (chatgpt.com)
+   - VS Code: https://code.visualstudio.com/
+   - **GitHub Copilot** (Recommended - this quest is designed for Copilot):
+     - Install "GitHub Copilot" extension in VS Code
+     - Install "GitHub Copilot Chat" extension in VS Code
+     - Sign in with your GitHub account
+     - Requires: GitHub Copilot subscription (see below)
 
-2. **Optional Tools:**
+2. **GitHub Copilot Subscription (Required)**
+
+   This quest is specifically designed for GitHub Copilot. You'll need one of:
+
+   - **Individual Plan**: $10/month - https://github.com/features/copilot
+   - **Free for Students/Teachers**: Verify at https://education.github.com/
+   - **Business/Enterprise Plan**: If your organization provides it
+
+   **Note:** Some features (like issue-to-PR automation) require Business or Enterprise plans.
+
+3. **Verify GitHub Copilot Setup:**
    ```bash
-   # Install markdown tools
+   # Open VS Code
+   # Press Ctrl+Shift+I (Cmd+Shift+I on Mac)
+   # Type: @workspace
+   # If it autocompletes, you're ready!
+   ```
+
+4. **Optional Tools:**
+   ```bash
+   # Install markdown tools for validation
    npm install -g markdownlint-cli markdown-link-check
 
-   # Or with Python
-   pip install markdownlint-cli
+   # Install GitHub CLI for automation examples
+   brew install gh  # macOS
+   # or download from https://cli.github.com/
    ```
 
 **Step 3: Start the Quest**
@@ -683,6 +704,282 @@ Keep in touch - I'd love to hear how you use this!
 ❌ Assume audience knows Git/GitHub
 ❌ Rush through (better to cover less well)
 ❌ Skip the "why" (explain value)
+
+---
+
+## Automated Quest Setup (GitHub Actions)
+
+### Overview
+
+The quest includes GitHub Actions workflows to automatically create sample issues and PRs for workshops and demos. This saves significant setup time and ensures consistent, high-quality sample data.
+
+### Available Workflows
+
+#### 1. Setup Quest Issues (`setup-quest-issues.yml`)
+
+**What it does:**
+- Creates 8 sample issues for Scenario 3 (Issue Management)
+- Issues include bugs, documentation problems, feature requests, questions
+- Some issues are intentionally duplicates or vague (for practice)
+- All tagged with `quest-sample` label for easy cleanup
+
+**When to use:**
+- Before workshop: Day before or morning of
+- For demos: When showing issue management capabilities
+- For testing: Verify Copilot issue features work
+
+**How to run:**
+
+1. **Via GitHub Web Interface:**
+   - Go to your repository on GitHub.com
+   - Click "Actions" tab
+   - Select "Setup Quest Issues" workflow
+   - Click "Run workflow" button
+   - Choose scenario: `scenario-3` or `all`
+   - Click "Run workflow"
+
+2. **Via GitHub CLI:**
+   ```bash
+   gh workflow run setup-quest-issues.yml
+   ```
+
+**Sample issues created:**
+- Issue #1: API authentication bug (detailed)
+- Issue #2: Documentation typo (good for auto-fix)
+- Issue #3: Broken link (good for auto-fix)
+- Issue #4: Feature request (dark mode)
+- Issue #5: Duplicate of Issue #1 (for finding duplicates)
+- Issue #6: Vague issue (needs more info)
+- Issue #7: Missing code import (good for auto-fix)
+- Issue #8: Question (categorization practice)
+
+#### 2. Setup Quest PR (`setup-quest-pr.yml`)
+
+**What it does:**
+- Creates a sample pull request for Scenario 2 (PR Review)
+- PR includes new documentation files and updates
+- Intentionally includes issues for review practice
+- Creates a feature branch automatically
+
+**When to use:**
+- Before workshop: Day before
+- For demos: When demonstrating PR review
+- For testing: Verify Copilot PR features work
+
+**How to run:**
+
+1. **Via GitHub Web Interface:**
+   - Go to Actions → "Setup Quest PR"
+   - Click "Run workflow"
+   - Choose PR size: `small`, `medium`, or `large`
+   - Click "Run workflow"
+
+2. **Via GitHub CLI:**
+   ```bash
+   gh workflow run setup-quest-pr.yml
+   ```
+
+**What the PR includes:**
+- New integration tutorial
+- Quick reference guide
+- Updated README
+- **Intentional issues:**
+  - Outdated Python version (Python 2.7)
+  - Broken link to deleted file
+  - Link to old domain
+  - Typo: "experiance" → "experience"
+
+**Perfect for practicing:**
+- PR review with @workspace
+- Finding cross-file issues
+- Generating constructive feedback
+- Using Copilot's PR summary feature
+
+#### 3. Cleanup Quest Samples (`cleanup-quest-samples.yml`)
+
+**What it does:**
+- Closes all sample issues (labeled `quest-sample`)
+- Closes all sample PRs (labeled `quest-sample`)
+- Deletes sample feature branches
+- Leaves comments explaining closure
+- Cleans up your repository after workshop
+
+**When to use:**
+- After workshop completion
+- After demo is done
+- Before next workshop (to start fresh)
+- When repository needs cleanup
+
+**How to run:**
+
+1. **Via GitHub Web Interface:**
+   - Go to Actions → "Cleanup Quest Samples"
+   - Click "Run workflow"
+   - **Important:** Type `DELETE` to confirm
+   - Click "Run workflow"
+
+2. **Via GitHub CLI:**
+   ```bash
+   gh workflow run cleanup-quest-samples.yml -f confirm=DELETE
+   ```
+
+**Safety features:**
+- Requires confirmation (must type "DELETE")
+- Only affects items labeled `quest-sample`
+- Leaves helpful comments on closed items
+- Does not delete real issues/PRs
+
+### Workshop Setup Checklist
+
+**1-2 Days Before Workshop:**
+
+- [ ] Run "Setup Quest Issues" workflow
+  ```bash
+  gh workflow run setup-quest-issues.yml
+  ```
+- [ ] Run "Setup Quest PR" workflow
+  ```bash
+  gh workflow run setup-quest-pr.yml
+  ```
+- [ ] Verify issues created (check Issues tab)
+- [ ] Verify PR created (check Pull Requests tab)
+- [ ] Test with GitHub Copilot
+  - Open VS Code
+  - Press `Ctrl+Shift+I`
+  - Type: `@workspace Categorize all issues labeled quest-sample`
+  - Verify Copilot can see and analyze them
+
+**Day of Workshop:**
+
+- [ ] Verify sample issues still open
+- [ ] Verify sample PR still open
+- [ ] Test Copilot @workspace can see them
+- [ ] Have cleanup workflow ready for after
+
+**After Workshop:**
+
+- [ ] Run "Cleanup Quest Samples" workflow
+  ```bash
+  gh workflow run cleanup-quest-samples.yml -f confirm=DELETE
+  ```
+- [ ] Verify all samples cleaned up
+- [ ] Repository ready for next workshop
+
+### Troubleshooting Workflows
+
+**Problem:** Workflow fails with permissions error
+
+**Solution:**
+```yaml
+# Ensure repository settings have correct permissions:
+# Settings → Actions → General → Workflow permissions
+# Select: "Read and write permissions"
+```
+
+**Problem:** Issues/PRs not created
+
+**Solution:**
+- Check Actions tab for workflow run logs
+- Verify you have issues/PR permissions
+- Check if issue/PR limits reached
+
+**Problem:** Can't find the workflow
+
+**Solution:**
+- Workflows are in `.github/workflows/` directory
+- Must be on `main` or `master` branch
+- Check Actions tab is enabled in repository settings
+
+**Problem:** Cleanup doesn't remove everything
+
+**Solution:**
+- Manually verify `quest-sample` label exists
+- Check if items were created with different labels
+- Use GitHub CLI to force close:
+  ```bash
+  gh issue close 1 2 3 4 5 6 7 8 --comment "Cleanup after quest"
+  ```
+
+### Manual Setup (Without Workflows)
+
+If GitHub Actions isn't available, you can manually create sample issues:
+
+**Quick Manual Setup:**
+
+```bash
+# Create sample issues manually
+gh issue create --title "[Quest Sample] API authentication failing" \
+  --body "Authentication error with valid API key..." \
+  --label "quest-sample,bug"
+
+gh issue create --title "[Quest Sample] Typo in docs" \
+  --body "Line 12 has 'experiance' should be 'experience'" \
+  --label "quest-sample,docs,good-first-issue"
+
+# Repeat for other issues...
+```
+
+**Or use the provided issue templates:**
+- All sample issue content is in the workflow files
+- Copy/paste from `.github/workflows/setup-quest-issues.yml`
+- Create issues manually via GitHub web interface
+
+### Benefits of Automated Setup
+
+✅ **Saves Time:**
+- Manual setup: 30-45 minutes
+- Automated: 2 minutes + workflow run time (1-2 min)
+- Total savings: ~30-40 minutes per workshop
+
+✅ **Consistency:**
+- Same issues every time
+- Ensures all practice scenarios covered
+- No forgotten issues
+
+✅ **Quality:**
+- Issues are well-written
+- Include all necessary details
+- Demonstrate best/worst practices
+
+✅ **Easy Cleanup:**
+- One command cleans everything
+- No leftover test data
+- Repository stays organized
+
+### Advanced: Customizing Workflows
+
+**To customize sample issues:**
+
+1. Edit `.github/workflows/setup-quest-issues.yml`
+2. Modify issue titles, bodies, or labels
+3. Add more issues or remove some
+4. Commit and push changes
+5. Run updated workflow
+
+**Example customization:**
+
+```yaml
+# Add company-specific issue
+- name: Create Company-Specific Issue
+  uses: actions/github-script@v7
+  with:
+    script: |
+      await github.rest.issues.create({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        title: '[Quest Sample] Update company branding',
+        body: 'Please update documentation with new company logo and colors.',
+        labels: ['quest-sample', 'company-specific']
+      });
+```
+
+**To customize the sample PR:**
+
+1. Edit `.github/workflows/setup-quest-pr.yml`
+2. Modify the files created in the PR
+3. Change the intentional issues
+4. Adjust PR description
+5. Commit and run
 
 ---
 
