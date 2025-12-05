@@ -2,13 +2,14 @@
 
 ## Objective
 
-Learn the fundamentals of GitHub Copilot workspace customization using `.agents` and `.prompts` files.
+Learn the fundamentals of GitHub Copilot workspace customization using custom agents and reusable prompts.
 
 ## Background
 
 GitHub Copilot's workspace features allow you to create:
-- **Custom agents** (`.agents` file): Specialized AI assistants with specific roles and expertise
-- **Reusable prompts** (`.prompts` file): Template prompts that can be easily invoked and customized
+
+- **Custom agents** (`.agent.md` files): Specialized AI assistants with specific roles and expertise
+- **Reusable prompts** (`.prompt.md` files): Template prompts that can be easily invoked and customized
 
 These features transform GitHub Copilot from a general-purpose assistant into a tailored toolkit for your specific workflows.
 
@@ -23,163 +24,311 @@ These features transform GitHub Copilot from a general-purpose assistant into a 
 
 First, let's see what agents and prompts look like in action.
 
-### Example .agents File
+### Creating Custom Agents
 
-Create a file named `.agents` in the repository root with this content:
+Custom agents are Markdown files with YAML frontmatter stored in the `.github/agents/` directory. Each agent has its own file with a `.agent.md` extension.
 
-```yaml
-documentation-auditor:
-  description: Specialized agent for analyzing documentation repositories and identifying content gaps, inconsistencies, and improvement opportunities
-  instructions: |
-    You are a documentation auditor with expertise in:
-    - Content gap analysis and identification
-    - Style consistency checking across multiple files
-    - Information architecture assessment
-    - User experience evaluation for documentation
-    - Technical accuracy validation
-    
-    When analyzing content:
-    1. Look for completeness and logical flow
-    2. Check for broken or outdated links
-    3. Identify missing prerequisites or setup instructions
-    4. Assess clarity and accessibility of language
-    5. Suggest structural improvements
-    
-    Always provide actionable recommendations with specific examples.
+#### Agent File Structure
 
-style-enforcer:
-  description: Agent focused on maintaining consistent writing style and documentation standards
-  instructions: |
-    You are a style guide enforcer for documentation teams. Your expertise includes:
-    - Grammar, spelling, and punctuation consistency
-    - Tone and voice alignment with brand guidelines
-    - Formatting consistency (headings, lists, code blocks)
-    - Terminology standardization
-    - Accessibility compliance (alt text, heading structure)
-    
-    When reviewing content:
-    1. Check adherence to established style guidelines
-    2. Identify inconsistent terminology or phrasing
-    3. Suggest improvements for readability and accessibility
-    4. Ensure proper markdown formatting
-    5. Maintain professional, helpful tone
-    
-    Provide specific corrections and explanations for suggested changes.
+```text
+.github/
+└── agents/
+    ├── documentation-auditor.agent.md
+    ├── style-enforcer.agent.md
+    └── content-strategist.agent.md
 ```
 
-### Example .prompts File
+#### Example: documentation-auditor.agent.md
 
-Create a file named `.prompts` in the repository root:
+Create a file at `.github/agents/documentation-auditor.agent.md`:
 
-```yaml
-content-audit:
-  description: Comprehensive analysis of repository content and structure
-  prompt: |
-    Please analyze this repository's documentation with focus on:
-    
-    **Content Analysis:**
-    - Overall structure and organization
-    - Completeness of information
-    - Content gaps or missing sections
-    - Outdated or inaccurate information
-    
-    **User Experience:**
-    - Navigation and findability
-    - Clarity of instructions
-    - Appropriate depth for target audience
-    - Logical flow and sequencing
-    
-    **Technical Quality:**
-    - Link validity and accuracy
-    - Code example functionality
-    - Prerequisites and setup clarity
-    - Cross-references and consistency
-    
-    Provide a structured report with:
-    1. Executive summary
-    2. Key findings (prioritized)
-    3. Specific recommendations
-    4. Quick wins for immediate improvement
+```markdown
+---
+name: documentation-auditor
+description: Specialized agent for analyzing documentation repositories and identifying content gaps, inconsistencies, and improvement opportunities
+tools: ["read", "search", "edit"]
+---
 
-style-check:
-  description: Review content for style consistency and quality
-  prompt: |
-    Review the provided content for:
-    
-    **Style Consistency:**
-    - Grammar, spelling, and punctuation
-    - Consistent terminology usage
-    - Appropriate tone and voice
-    - Proper markdown formatting
-    
-    **Quality Factors:**
-    - Clarity and conciseness
-    - Logical organization
-    - Accessibility compliance
-    - Professional presentation
-    
-    **Output Format:**
-    1. Overall assessment (1-10 score)
-    2. Specific issues found (with line references if applicable)
-    3. Suggested improvements
-    4. Style guide recommendations
+You are a documentation auditor with expertise in:
+- Content gap analysis and identification
+- Style consistency checking across multiple files
+- Information architecture assessment
+- User experience evaluation for documentation
+- Technical accuracy validation
 
-generate-summary:
-  description: Create executive summaries of content or changes
-  prompt: |
-    Create a comprehensive summary of the provided content including:
-    
-    **Key Information:**
-    - Main topics and themes
-    - Important facts or data points
-    - Key takeaways or conclusions
-    
-    **Structure:**
-    - Logical organization of information
-    - Relationships between topics
-    - Priority or importance ranking
-    
-    **Actionable Items:**
-    - Decisions that need to be made
-    - Next steps or follow-up actions
-    - Areas requiring attention
-    
-    Format as a clear, executive-level summary suitable for stakeholder review.
+When analyzing content:
+1. Look for completeness and logical flow
+2. Check for broken or outdated links
+3. Identify missing prerequisites or setup instructions
+4. Assess clarity and accessibility of language
+5. Suggest structural improvements
+
+Always provide actionable recommendations with specific examples.
 ```
 
-## Step 2: Test the Configuration
+#### Example: style-enforcer.agent.md
 
-1. **Save both files** in your repository root
+Create a file at `.github/agents/style-enforcer.agent.md`:
+
+```markdown
+---
+name: style-enforcer
+description: Agent focused on maintaining consistent writing style and documentation standards
+tools: ["read", "search"]
+---
+
+You are a style guide enforcer for documentation teams. Your expertise includes:
+- Grammar, spelling, and punctuation consistency
+- Tone and voice alignment with brand guidelines
+- Formatting consistency (headings, lists, code blocks)
+- Terminology standardization
+- Accessibility compliance (alt text, heading structure)
+
+When reviewing content:
+1. Check adherence to established style guidelines
+2. Identify inconsistent terminology or phrasing
+3. Suggest improvements for readability and accessibility
+4. Ensure proper markdown formatting
+5. Maintain professional, helpful tone
+
+Provide specific corrections and explanations for suggested changes.
+```
+
+#### Example: content-strategist.agent.md
+
+Create a file at `.github/agents/content-strategist.agent.md`:
+
+```markdown
+---
+name: content-strategist
+description: Senior-level content strategy specialist focused on Microsoft Learn module architecture, learning path optimization, and Fabric content ecosystem design
+tools: ["read", "search"]
+---
+
+You are a senior content strategist with 10+ years of experience in:
+- Microsoft Learn information architecture and module taxonomy design
+- Learning path optimization and content gap analysis for Fabric
+- Learn content governance and lifecycle management (ms.date, freshness)
+- Multi-audience content strategy (data engineers, analysts, architects)
+- Metrics-driven Learn content optimization
+
+Your strategic approach:
+1. **Ecosystem Analysis**: Map content relationships and dependencies
+2. **User Journey Optimization**: Identify friction points and improvement opportunities
+3. **Content Governance**: Recommend processes for consistency and quality
+4. **Scalability Planning**: Design systems that grow with organizational needs
+5. **Success Metrics**: Define measurable outcomes for content effectiveness
+
+**Strategic Output Format:**
+- Executive Summary with key strategic insights
+- Content Architecture Recommendations
+- User Journey Optimization Plan
+- Governance Framework Suggestions
+- Success Metrics and KPIs
+
+Always think systemically and consider long-term organizational impact.
+```
+
+#### Agent YAML Properties Reference
+
+| Property | Required | Description |
+|----------|----------|-------------|
+| `name` | No | Display name (defaults to filename) |
+| `description` | **Yes** | Brief explanation of the agent's purpose |
+| `tools` | No | List of tools the agent can use (e.g., `["read", "search", "edit"]`) |
+| `model` | No | Specify AI model (VS Code only) |
+| `target` | No | `vscode` or `github-copilot` to limit availability |
+
+### Creating Reusable Prompts
+
+Prompts are also Markdown files with YAML frontmatter, stored in `.github/prompts/`:
+
+#### Prompt File Structure
+
+```text
+.github/
+└── prompts/
+    ├── content-audit.prompt.md
+    ├── style-check.prompt.md
+    └── generate-summary.prompt.md
+```
+
+#### Example: content-audit.prompt.md
+
+Create a file at `.github/prompts/content-audit.prompt.md`:
+
+```markdown
+---
+description: Comprehensive analysis of repository content and structure
+---
+
+Please analyze this repository's documentation with focus on:
+
+**Content Analysis:**
+- Overall structure and organization
+- Completeness of information
+- Content gaps or missing sections
+- Outdated or inaccurate information
+
+**User Experience:**
+- Navigation and findability
+- Clarity of instructions
+- Appropriate depth for target audience
+- Logical flow and sequencing
+
+**Technical Quality:**
+- Link validity and accuracy
+- Code example functionality
+- Prerequisites and setup clarity
+- Cross-references and consistency
+
+Provide a structured report with:
+1. Executive summary
+2. Key findings (prioritized)
+3. Specific recommendations
+4. Quick wins for immediate improvement
+```
+
+#### Example: style-check.prompt.md
+
+Create a file at `.github/prompts/style-check.prompt.md`:
+
+```markdown
+---
+description: Review content for style consistency and quality
+---
+
+Review the provided content for:
+
+**Style Consistency:**
+- Grammar, spelling, and punctuation
+- Consistent terminology usage
+- Appropriate tone and voice
+- Proper markdown formatting
+
+**Quality Factors:**
+- Clarity and conciseness
+- Logical organization
+- Accessibility compliance
+- Professional presentation
+
+**Output Format:**
+1. Overall assessment (1-10 score)
+2. Specific issues found (with line references if applicable)
+3. Suggested improvements
+4. Style guide recommendations
+```
+
+#### Example: generate-summary.prompt.md
+
+Create a file at `.github/prompts/generate-summary.prompt.md`:
+
+```markdown
+---
+description: Create executive summaries of content or changes
+---
+
+Create a comprehensive summary of the provided content including:
+
+**Key Information:**
+- Main topics and themes
+- Important facts or data points
+- Key takeaways or conclusions
+
+**Structure:**
+- Logical organization of information
+- Relationships between topics
+- Priority or importance ranking
+
+**Actionable Items:**
+- Decisions that need to be made
+- Next steps or follow-up actions
+- Areas requiring attention
+
+Format as a clear, executive-level summary suitable for stakeholder review.
+```
+
+#### Prompt File Features
+
+Prompt files support advanced features:
+
+- **File references**: Use `[filename](relative/path)` or `#file:relative/path` to include other files as context
+- **Description**: The YAML `description` field appears in the prompt picker
+- **Markdown formatting**: Use any Markdown formatting in the prompt body
+
+> **Note:** Prompt files are currently in public preview. They work in VS Code, Visual Studio, and JetBrains IDEs.
+
+## Step 2: Create the Configuration Files
+
+### Option A: Using VS Code UI (Recommended)
+
+1. **Open Copilot Chat** (Ctrl+Shift+I or Cmd+Shift+I)
+2. Click the **agents dropdown** at the bottom of the chat view
+3. Select **Configure Custom Agents...**
+4. Click the **+** button to **Create new custom agent**
+5. Choose **Workspace** to store in `.github/agents/`
+6. Enter a filename (e.g., `documentation-auditor`)
+7. Configure the agent profile in the newly created `.agent.md` file
+
+### Option B: Manual File Creation
+
+Create the directory structure:
+
+```text
+.github/
+├── agents/
+│   ├── documentation-auditor.agent.md
+│   ├── style-enforcer.agent.md
+│   └── content-strategist.agent.md
+└── prompts/
+    ├── content-audit.prompt.md
+    ├── style-check.prompt.md
+    └── generate-summary.prompt.md
+```
+
+Then:
+
+1. Copy the example content from Step 1 into each file
 2. **Reload VS Code** (or restart GitHub Copilot extension)
-3. **Open Copilot Chat** (Ctrl+Shift+I or Cmd+Shift+I)
+
+## Step 3: Test the Configuration
+
+Open **Copilot Chat** and verify your agents appear in the agents dropdown.
 
 ### Test Your Agents
 
 Try these commands in Copilot Chat:
 
-```
+```text
 @documentation-auditor Please analyze the structure of the learn-pr/wwl folder
 ```
 
-```
+```text
 @style-enforcer Review the learn-pr/wwl/get-started-lakehouses/index.yml file for style consistency
 ```
 
 ### Test Your Prompts
 
-Try these commands in Copilot Chat:
+To use a prompt file in VS Code:
 
-```
-#content-audit Analyze the learn-pr/wwl/analyze-devops-continuous-planning-intergration folder
-```
+1. Click the **Attach context** icon (📎) at the bottom of Chat
+2. Select **Prompt...** from the dropdown
+3. Choose your prompt file (e.g., `content-audit`)
+4. Optionally add more context or type additional instructions
+5. Submit the prompt
 
-```
-#style-check Please review this file: learn-pr/wwl/analyze-devops-continuous-planning-intergration/index.yml
-```
+Alternatively, in JetBrains IDEs, type `/prompt-name` directly (e.g., `/content-audit`).
 
-## Step 3: Understanding the Results
+**Example workflow:**
+
+1. Attach the `content-audit` prompt
+2. Also attach a folder or file for context
+3. Submit to get a structured analysis
+
+## Step 4: Understanding the Results
 
 Notice how:
+
 - **Agents respond with their specialized perspective** and expertise
 - **Prompts provide structured, consistent output** following your templates
 - **Workspace context (@workspace)** gives agents and prompts full repository awareness
