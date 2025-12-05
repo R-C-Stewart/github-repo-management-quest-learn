@@ -44,6 +44,18 @@ This quest uses **real Microsoft Learn modules** in the `learn-pr/wwl/` folder a
 - **GitHub Copilot**: Active GitHub Copilot subscription (individual, business, or enterprise)
 - **Tools**: VS Code with GitHub Copilot extension, Git client, GitHub account
 
+### Key Terms
+
+| Term | Definition |
+|------|------------|
+| **Repository** | A folder containing your project's files, history, and version control data. Often shortened to "repo." |
+| **Fork** | A personal copy of someone else's repository on your GitHub account, allowing you to make changes without affecting the original. |
+| **Clone** | Downloading a repository from GitHub to your local computer so you can work on it offline. |
+| **Branch** | A parallel version of your repository where you can make changes without affecting the main codebase. |
+| **Pull Request (PR)** | A proposal to merge changes from one branch into another, allowing others to review before accepting. |
+| **Commit** | A saved snapshot of changes to your files, with a message describing what changed. |
+| **Issue** | A task, bug report, or feature request tracked in a repository's issue tracker. |
+
 ## Getting Started
 
 ### Setup Requirements

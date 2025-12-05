@@ -21,6 +21,11 @@ These features transform GitHub Copilot from a general-purpose assistant into a 
 
 ## Step 1: Explore Example Configurations
 
+### What Are Agents and Prompts?
+
+- **Agents** (`.agents` file): Specialized AI assistants with specific roles
+- **Prompts** (`.prompts` file): Reusable templates for common tasks
+
 First, let's see what agents and prompts look like in action.
 
 ### Example .agents File
