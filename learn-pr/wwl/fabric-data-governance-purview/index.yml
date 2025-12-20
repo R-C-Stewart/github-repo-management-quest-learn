@@ -20,7 +20,7 @@ abstract: |
     - Analyze Microsoft Fabric data in the Microsoft Purview hub.
 prerequisites: |
   - Familiarity with the Microsoft Fabric user interface and core concepts.
-iconUrl: /learn/achievements/generic-badge.svg
+iconUr: /learn/achievements/generic-badge.svg
 levels: 
   - intermediate
 roles: 
