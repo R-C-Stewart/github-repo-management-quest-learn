@@ -10,6 +10,9 @@ Proper data preparation is essential for effective data agent responses:
 
 ## Security configuration
 
+> [!IMPORTANT]
+> Proper security configuration is critical when implementing data agents. These settings protect sensitive data and ensure compliance with your organization's security policies.
+
 Configure appropriate security boundaries for your data agents:
 
 1. Enable row-level security (RLS) on sensitive data
