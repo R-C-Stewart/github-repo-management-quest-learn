@@ -18,7 +18,7 @@ abstract: |
   - Test and refine agent responses
   - Implement advanced scenarios and best practices
   - Troubleshoot common data agent issues
-prerequisites
+prerequisites:
   - Basic understanding of Microsoft Fabric workspaces
   - Familiarity with lakehouses and data warehouses
   - Experience with Copilot in other Microsoft products
