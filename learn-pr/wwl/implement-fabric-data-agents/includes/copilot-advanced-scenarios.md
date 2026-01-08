@@ -22,7 +22,8 @@ When configured with access to multiple data sources, agents can correlate infor
 
 ```python
 # Example: Agent correlating customer data across sources
-from fabric.dataagent import DataAgent
+# Assume DataAgent is imported from the appropriate Fabric SDK package
+# from your_fabric_sdk.data_agent import DataAgent
 
 agent = DataAgent(workspace="sales-analytics")
 response = agent.query(
