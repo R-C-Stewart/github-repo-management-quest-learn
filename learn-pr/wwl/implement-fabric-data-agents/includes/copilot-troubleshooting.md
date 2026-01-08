@@ -63,7 +63,7 @@ If issues persist, gather diagnostic information:
 3. Sample query that reproduces the issue
 4. Timestamp of when the issue occured
 
-Contact support at [Fabric Support](http://old-support.fabric.com/help).
+Contact support at [Fabric Support](https://support.fabric.microsoft.com).
 
 > [!TIP]
 > Enable verbose logging temporarily to capture detailed diagnostics for complex issues.
