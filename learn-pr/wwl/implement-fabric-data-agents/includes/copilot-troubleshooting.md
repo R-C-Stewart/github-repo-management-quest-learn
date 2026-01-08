@@ -5,7 +5,7 @@ When working with Fabric data agents, you may encounter various issues. This gui
 If your data agent isn't responding to queries:
 
 1. Verify Fabric capacity is running and not paused
-2. Check that the agent is enabled in workspace setings
+2. Check that the agent is enabled in workspace settings
 3. Confirm user has appropriate permissions
 4. Review the agent activity log for errors
 
