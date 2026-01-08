@@ -61,7 +61,7 @@ If issues persist, gather diagnostic information:
 1. Agent ID and workspace ID
 2. Exact error message or unexpected behavior
 3. Sample query that reproduces the issue
-4. Timestamp of when the issue occured
+4. Timestamp of when the issue occurred
 
 Contact support at [Fabric Support](https://support.fabric.microsoft.com).
 
