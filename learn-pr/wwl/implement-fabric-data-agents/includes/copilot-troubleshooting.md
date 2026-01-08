@@ -37,7 +37,7 @@ Slow response times often indicate:
 |---------|--------------|----------|
 | > 30s response | Large dataset scan | Add aggregation layer |
 | Timeout errors | Complex joins | Simplify data model |
-| Intermitent slowness | Capacity throttling | Review capacity metrics |
+| Intermittent slowness | Capacity throttling | Review capacity metrics |
 
 ## Error messages
 
