@@ -1,4 +1,4 @@
-Follow these best practices when implementing Copilot data agents in your Microsoft Fabric environment to ensure optimal performance and user experience.
+Follow these best practices when implementing Copilot for Microsoft Fabric in your Microsoft Fabric environment to ensure optimal performance and user experience.
 
 ## Data preparation
 
