@@ -15,7 +15,7 @@ When agent responses don't match expectations:
 
 ### Check data freshness
 
-Data agents query the most recent data avialable. If data seems outdated:
+Data agents query the most recent data available. If data seems outdated:
 
 - Verify lakehouse data refresh completed
 - Check semantic model refresh schedule
